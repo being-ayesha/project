@@ -1,0 +1,65 @@
+@extends('frontend.sellers.pages.stores.template')
+@section('storeContent')
+  <div class="card">
+        <div class="card-body">
+            <div class="row" style="display:inline;">
+                <div class="col-md-2">
+                    @if(Auth::user()->profile_photo)
+                      <img style="width:60px;height: 60px;border-radius:50%" src="{{url('public/uploads/sellers/profilephoto')}}/{{Auth::user()->profile_photo}}" class="img-circle profile-image" alt="profile-image" name="image">
+                    @else
+                      <img style="width:60px;height: 60px;border-radius:50%" src="{{url('public/uploads/sellers/profilephoto/nouser.jpg')}}" class="img-circle profile-image" alt="profile-image" name="image">
+                    @endif
+                </div>
+                <div class="col-md-10" style="color:gray">
+                    <h1 style="font-size: 26px">Aminultechvill (<a href="#feedback" id="feedbackLink"><span style="color:gray" class="feedback">0%</span></a>)</h1>
+                    <h5 style="font-size: 16px">Member Since: October 2018</h5>
+                    <h5></h5>
+                </div>
+            </div>
+            <div class="row" style="display:inline;">
+                <div class="col-md-12 text-right" style="display: inline-block;vertical-align: middle;float: none;">
+                    <a href="#message-seller" class="btn btn-primary btn-md waves-effect waves-light" data-animation="blur" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Message Seller</a>
+                </div>
+            </div>
+        </div>
+  </div>
+  <div class="row" style="margin-top: 30px;">
+	      <div class="col-sm-4">
+	            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+	                @php $i=0; @endphp
+	                @foreach($productGroups as $productGroup)
+	                  <a class="nav-link {{$i==0?'active':''}}" id="v-pills-{{$i}}-tab" data-toggle="pill" href="#v-pills-{{$i}}" role="tab" aria-controls="v-pills-{{$i}}" aria-selected="false">{{$productGroup->product_group_title}}</a>
+	                  @php $i++; @endphp
+	                @endforeach
+	            </div>
+	      </div>
+	      <div class="col-sm-8">
+		        <div class="card">
+		            <div class="card-body">
+		            	<div class="container">   
+		            	   <div class="tab-content" id="v-pills-tabContent">
+		                        @php $j=0;@endphp
+		                            @foreach($groupProductAll as $productAll)
+		                      	<div class="tab-pane fade {{$j==0?'show active':''}}" id="v-pills-{{$j}}" role="tabpanel" aria-labelledby="v-pills-{{$j}}-tab">
+		                              @php $cnt = count($productAll);@endphp
+		                              @for($i=0;$i<$cnt;$i++)
+		                                <div class="col-sm-12 col-md-3 col-lg-3" style="float: left;">
+		                                	<a href="{{url('buy')}}/{{$productAll[$i]['product_uuid']}}"><img class="rounded" style="width: 100px;height: 90px" src="{{url('public/uploads/sellers/products')}}/{{$productAll[$i]['product_photo']}}" alt="{{$productAll[$i]['product_title']}}"></a>
+		                                	<h1><a href="{{url('buy')}}/{{$productAll[$i]['product_uuid']}}" style="font-size: 14px">{{$productAll[$i]['product_title']}}</a></h1>
+		                                	@if($productAll[$i]['stock']=='-1')
+		                                		<p style="color:#007bff"><span class="text-right">${{$productAll[$i]['price']}}</span></p>
+		                                	@else
+		                                		<p style="color:#007bff">Stock:&nbsp;<span class="text-danger text-left">{{$productAll[$i]['stock']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-right">${{$productAll[$i]['price']}}</span></p>
+		                                	@endif
+		                                </div>
+		                              @endfor
+		                              @php $j++;@endphp
+		                        </div>
+		                             @endforeach
+		                   </div>
+		               </div>
+		            </div>
+		        </div>
+	      </div>
+  </div>
+@endsection
