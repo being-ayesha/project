@@ -103,7 +103,7 @@
 
 		<div class="col-lg-6">
 			
-				<div class="card">
+			<div class="card">
 				<div class="card-body">
 					<span class="fa-stack fa-lg">
 						<i class="fa fa-circle-thin fa-stack-2x"></i>
@@ -118,7 +118,34 @@
 					<h3 class="card-title">Coupon Statistics</h3>
 				</div>
 				<div class="card-body">
-					Number Of Uses 
+					<div class="row">
+						<div class="form-group">
+						<select class="form-control select" data-container-css-class="bg-teal-400" data-fouc>
+							<option value="AZ">Arizona</option>
+							<option value="CO">Colorado</option>
+							<option value="ID">Idaho</option>
+							<option value="WY">Wyoming</option>
+							<option value="AL">Alabama</option>
+							<option value="IA">Iowa</option>
+							<option value="KS">Kansas</option>
+							<option value="KY">Kentucky</option>
+						</select>
+					</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+						<select class="form-control select" data-container-css-class="bg-teal-400" data-fouc>
+							<option value="AZ">Arizona</option>
+							<option value="CO">Colorado</option>
+							<option value="ID">Idaho</option>
+							<option value="WY">Wyoming</option>
+							<option value="AL">Alabama</option>
+							<option value="IA">Iowa</option>
+							<option value="KS">Kansas</option>
+							<option value="KY">Kentucky</option>
+						</select>
+					</div>
+					</div>
 				</div>
 			</div>
 				
