@@ -73,6 +73,7 @@ Route::group(['prefix' => 'seller','namespace' => 'sellers','middleware'=>['gues
 	Route::post('coupon-code-check','CouponController@checkCouponCode');
 	Route::match(['GET','POST'],'edit-coupon/{id}','CouponController@editCoupon');
 	Route::post('delete-coupon','CouponController@deleteCoupon');
+	Route::post('number-of-coupon-uses','CouponController@numberOfCouponUses');
 	//Settings route
 	Route::match(['GET','POST'],'settings/account','SettingsController@accountSettings');
 	Route::get('{username}','SettingsController@userStore');

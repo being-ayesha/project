@@ -8,10 +8,12 @@ use Common;
 use App\models\frontend\sellers\Product;
 use App\models\frontend\sellers\Coupon;
 use App\models\frontend\PaymentMethod;
+use App\models\frontend\sellers\Order;
 use Validator;
 use Auth;
 use DateTime;
 use App\DataTables\frontend\sellers\CouponsDataTable;
+use App\DataTables\frontend\sellers\LatestOrderUsingCouponDataTable;
 class CouponController extends Controller
 {
     /**
@@ -103,10 +105,12 @@ class CouponController extends Controller
         return response()->json(['status' => 1]);
     }
 
-    public function editCoupon(Request $request, $id){
+    public function editCoupon(Request $request, $id,LatestOrderUsingCouponDataTable $dataTable){
        
         $coupon  = Coupon::where(['id' => $id])->first();
+
         if(!$_POST){
+
         $option['coupon']           = $coupon;
         $option['siteName']         = 'Rocketr';
         $option['pageTitle']        = 'Update Coupon';
@@ -114,7 +118,7 @@ class CouponController extends Controller
         $option['products']         = Product::where(['seller_id' => Auth::user()->id])->get()->toArray();
         $option['groupPayment']     = explode(',',$coupon->getCouponPayments($coupon->id));
         $option['paymentMethod']    = PaymentMethod::get()->toArray();
-        return view('frontend.sellers.pages.coupons.edit',$option);
+        return $dataTable->with('coupon_id',$id)->render('frontend.sellers.pages.coupons.edit',$option);
         }else{
 
             $rules=[
@@ -157,5 +161,17 @@ class CouponController extends Controller
              }
         }
         
+    }
+
+    public function numberOfCouponUses(Request $request){
+        // $coupons=Coupon::first();
+        // // dd(date_format(date_create($coupons->expiry_date),"Y-m"));
+        // dd(date_format(date_create($request->coupon_year.'-'.$request->coupon_month),"Y-m-d h:i:s"));
+        // $date=$request->coupon_year.'-'.$request->coupon_month;
+        // echo $date;exit();
+        $order=Order::where(['seller_id'=>Auth::user()->id,'coupon_code'=>$request->coupon_code])->get();
+       // $cupon_expiary_date=date_format(date_create($order->expiry_date),"Y-m");
+        //dd($cupon_expiary_date,1);
+        dd($request->all());
     }
 }

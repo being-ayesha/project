@@ -118,52 +118,82 @@
 					<h3 class="card-title">Coupon Statistics</h3>
 				</div>
 				<div class="card-body">
+
 					<div class="row">
-						<div class="form-group">
-						<select class="form-control select" data-container-css-class="bg-teal-400" data-fouc>
-							<option value="AZ">Arizona</option>
-							<option value="CO">Colorado</option>
-							<option value="ID">Idaho</option>
-							<option value="WY">Wyoming</option>
-							<option value="AL">Alabama</option>
-							<option value="IA">Iowa</option>
-							<option value="KS">Kansas</option>
-							<option value="KY">Kentucky</option>
-						</select>
+						<div class="col-md-6">
+							<div class="form-group">
+								<select class="form-control select" data-container-css-class="bg-teal-400" data-fouc class="coupon_month" id="coupon_month">
+									@for ($i = 0; $i < 12; ++$i)
+									<option value="<?=$i+1?>"> <?=date("F", strtotime("January +$i months"))?> </option>
+									@endfor
+
+								</select>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<select class="form-control select" data-container-css-class="bg-teal-400" data-fouc class="coupon_year" id="coupon_year">
+									<?php
+									$years = range ( date( 'Y' ), date( 'Y')-2);
+									?>
+									@foreach ( $years as $year )
+									<option value="<?=$year?>"><?=$year?></option>
+									@endforeach
+								</select>
+							</div>
+						</div>
 					</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
-						<select class="form-control select" data-container-css-class="bg-teal-400" data-fouc>
-							<option value="AZ">Arizona</option>
-							<option value="CO">Colorado</option>
-							<option value="ID">Idaho</option>
-							<option value="WY">Wyoming</option>
-							<option value="AL">Alabama</option>
-							<option value="IA">Iowa</option>
-							<option value="KS">Kansas</option>
-							<option value="KY">Kentucky</option>
-						</select>
-					</div>
-					</div>
+					
 				</div>
 			</div>
-				
-			
-			
 		</div>
-
 	</div>
 
-		
-	
 
+	<div class="card">
+    	<div class="card-body">
+    		<p class="text-uppercase font-size-sm" style="font-weight: 700;color:#797979;font-size:14px;margin-bottom: 10px">View Product Groups</p>
+			{!! $dataTable->table(['class' => 'table table-striped table-hover dt-responsive text-center', 'width' => '100%', 'cellspacing' => '0']) !!}
+		</div>
+	</div>
+	
 	<!-- /form inputs -->
 @endsection
-<!-- @push('scripts')
-
+@push('scripts')
+{!! $dataTable->scripts() !!}
 <script type="text/javascript">
-
+$(function(){
+        $(document).change('.coupon_month',function(){
+           var coupon_code	 = $('#coupon_code').val();
+           var coupon_month	 = $('#coupon_month').val();
+           var coupon_year	 = $('#coupon_year').val();
+           var url            = SITE_URL+'/seller/number-of-coupon-uses';
+           var token          = $('input[name="_token"]').val();
+               $.ajax({
+                   url:url,
+                   method:'post',
+                   dataType:'json',
+                   async:false,
+                   data:{
+                    'coupon_code':coupon_code,
+                    'coupon_month':coupon_month,
+                    'coupon_year':coupon_year,
+                    '_token':token
+                   },
+                   success:function(response){
+                      if(response.status==1){
+                        $('tr#tr_'+coupon_code).hide('slow');
+                        //$(this).hide();
+                      }else{
+                        alert('Product group does not exists');
+                        return false;
+                      }
+                   }
+               });
+           
+        });
+    });
 </script>
 
-@endpush -->
+@endpush
