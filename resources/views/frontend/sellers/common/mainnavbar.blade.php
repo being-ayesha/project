@@ -1,10 +1,11 @@
 <div class="navbar navbar-expand-md navbar-dark">
 	<div class="navbar-brand">
-		<a href="{{url('seller')}}" class="d-inline-block">
+
+		<a href="{{url('seller')}}" >
 			<img src="{{asset('public/frontend/global_assets/images/logo_light.png')}}" alt="">
+			Rockter
 		</a>
 	</div>
-
 	<div class="d-md-none">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
 			<i class="icon-tree5"></i>
@@ -298,7 +299,11 @@
 
 			<li class="nav-item dropdown dropdown-user">
 				<a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
-					<img src="{{asset('public/frontend/global_assets/images/placeholders/placeholder.jpg')}}" class="rounded-circle" alt="">
+					@if(Auth::user()->profile_photo)
+					<img style="width:38px;height: 38px" src="{{url('public/uploads/sellers/profilephoto')}}/{{Auth::user()->profile_photo}}" class="rounded-circle profile-image" alt="profile-image" name="image">
+					@else
+					<img style="width:38px;height: 38px" src="{{url('public/uploads/sellers/profilephoto/nouser.jpg')}}" class="rounded-circle profile-image" alt="profile-image" name="image" width="38" height="38">
+					@endif
 					<span>{{Auth::user()->email}}</span>
 				</a>
 

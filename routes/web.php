@@ -67,6 +67,11 @@ Route::group(['prefix' => 'seller','namespace' => 'sellers','middleware'=>['gues
 	Route::post('product-group-check','ProductGroupsController@checkProductGroup');
 	Route::match(['GET','POST'],'edit-product-groups/{id}','ProductGroupsController@editProductGroups');
 	Route::post('delete-product-groups','ProductGroupsController@deleteProductGroup');
+
+	// Order Route
+	Route::get('orders/{status?}','OrderController@index');
+	Route::get('view-order/{id}','OrderController@orderView');
+	Route::post('delete-order','OrderController@deleteOrder');
 	//Coupons routes
 	Route::get('coupons','CouponController@index');
 	Route::match(['GET','POST'],'add-coupon','CouponController@addCoupon');
@@ -76,6 +81,10 @@ Route::group(['prefix' => 'seller','namespace' => 'sellers','middleware'=>['gues
 	Route::post('number-of-coupon-uses','CouponController@numberOfCouponUses');
 	//Settings route
 	Route::match(['GET','POST'],'settings/account','SettingsController@accountSettings');
+
+});
+//Routes for sellers page individual store
+Route::group(['prefix' => 'sellers','namespace' => 'sellers'],function(){	
 	Route::get('{username}','SettingsController@userStore');
 });
 

@@ -7,7 +7,7 @@ use App\models\frontend\sellers\Product;
 use Yajra\DataTables\Services\DataTable;
 use Auth;
 use DateTime;
-class LatestOrderUsingCouponDataTable extends DataTable
+class LastOrderListDataTable extends DataTable
 {
    /**
      * Build DataTable class.
@@ -19,6 +19,10 @@ class LatestOrderUsingCouponDataTable extends DataTable
     {
         return datatables()
             ->eloquent($this->query())
+             ->addColumn('id', function ($order)
+            {
+                return $order->id;
+            })
              ->addColumn('product_id', function ($order)
             {
                 return "<a href=".url($order->product->product_uuid).">".$order->product->product_title."</a>";
@@ -29,8 +33,12 @@ class LatestOrderUsingCouponDataTable extends DataTable
                 $view='<a href="'. url('seller/view-order/'.$coupon->order_uuid) . '" class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></a>&nbsp;';
                 return $view;
             })
+            ->addColumn('payment_method_id', function ($order)
+            {
+                return "<a href=".url($order->payment->id).">".$order->payment->name."</a>";
+            })
 
-            ->rawColumns(['order_uuid','product_id','buyer_email','delivery_status','order_date','payment_method_id','action'])
+            ->rawColumns(['id','order_uuid','product_id','buyer_email','delivery_status','order_date','payment_method_id','action'])
 
             ->make(true);
     }
@@ -43,8 +51,9 @@ class LatestOrderUsingCouponDataTable extends DataTable
      */
     public function query()
     {
-        $coupon_id = $this->coupon_id;
-        $query = Order::where(['seller_id'=>Auth::user()->id,'coupon_code'=>$coupon_id])->select();
+        //$query = Order::where(['seller_id'=>Auth::user()->id])->select('*')->take(1)->orderBy('id', 'desc');
+        $query = Order::where(['seller_id'=>Auth::user()->id]);
+       //print_r($query->toSql());exit();
         return $this->applyScopes($query);
     }
 
@@ -56,15 +65,19 @@ class LatestOrderUsingCouponDataTable extends DataTable
     public function html()
     {
         return $this->builder()
+            ->addColumn(['data' => 'id', 'name' => 'orders.id', 'title' => 'Order Id','orderable' => true,'searchable'=> true,'visible' => false])
             ->addColumn(['data' => 'order_uuid', 'name' => 'orders.order_uuid', 'title' => 'Order Id'])
             ->addColumn(['data' => 'product_id', 'name' => 'orders.product_id', 'title' => 'Product Title'])
-            ->addColumn(['data' => 'buyer_email', 'name' => 'orders.buyer_email', 'title' => 'Buyer Email'])
-            ->addColumn(['data' => 'delivery_status', 'name' => 'orders.delivery_status', 'title' => 'Status'])
+            ->addColumn(['data' => 'buyer_email', 'name' => 'orders.buyer_email', 'title' => 'Buyer E-mail'])
+            ->addColumn(['data' => 'amount', 'name' => 'orders.amount', 'title' => 'Amount'])
+            ->addColumn(['data' => 'payment_method_id', 'name' => 'orders.payment_method_id', 'title' => 'Payment Method'])
+            ->addColumn(['data' => 'payment_status', 'name' => 'orders.payment_status', 'title' => 'Status'])
             ->addColumn(['data' => 'order_date', 'name' => 'orders.order_date', 'title' => 'Date'])
             ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Options', 'orderable' => false, 'searchable' => false])
             ->parameters([
             'dom' => 'lBfrtip',
             'buttons' => ['csv'],
+            //'pageLength' => [[1],[10]],
             ]);
     }
 

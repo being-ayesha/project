@@ -24,9 +24,11 @@ class CreateOrdersTable extends Migration
             $table->string('buyer_country')->nullable();
             $table->string('buyer_ip')->nullable();
             $table->string('coupon_code')->nullable();
+            $table->string('coupon_activate_date')->nullable();
             $table->string('http_referer')->nullable();
             $table->decimal('amount')->nullable();
             $table->integer('payment_method_id')->nullable();
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->integer('product_quantity')->nullable();
             $table->enum('payment_status',['unpaid','paid'])->nullable();
             $table->enum('delivery_status',['Yes','No'])->nullable();

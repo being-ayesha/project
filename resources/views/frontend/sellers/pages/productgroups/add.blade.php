@@ -5,7 +5,7 @@
 
 			<div class="card-body">
 				<form action="{{url('seller/product-groups')}}" method="post" id="productGroupForm">
-					<a class="rocketr-embed" data-product="c639ce9a5ca8" data-color="#81C868" data-text="Buy Now" data-width="200px"  href="https://rocketr.net/buy/c639ce9a5ca8">Buy Now</a><script type="text/javascript" src="https://static.rocketr.net/assets/RocketrButton.js"></script>
+					<!-- <a class="rocketr-embed" data-product="c639ce9a5ca8" data-color="#81C868" data-text="Buy Now" data-width="200px"  href="https://rocketr.net/buy/c639ce9a5ca8">Buy Now</a><script type="text/javascript" src="https://static.rocketr.net/assets/RocketrButton.js"></script> -->
 					<fieldset class="mb-3">
 						<p class="text-uppercase font-size-sm" style="font-weight: 700;color:#797979;font-size:14px">Add a product group</p>
 						{{@csrf_field()}}

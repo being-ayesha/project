@@ -118,6 +118,7 @@ class CouponController extends Controller
         $option['products']         = Product::where(['seller_id' => Auth::user()->id])->get()->toArray();
         $option['groupPayment']     = explode(',',$coupon->getCouponPayments($coupon->id));
         $option['paymentMethod']    = PaymentMethod::get()->toArray();
+        $option['number_of_coupon_uses'] = Order::where(['seller_id'=>Auth::user()->id,'coupon_code'=>$id])->select('coupon_code')->count();
         return $dataTable->with('coupon_id',$id)->render('frontend.sellers.pages.coupons.edit',$option);
         }else{
 
@@ -164,14 +165,21 @@ class CouponController extends Controller
     }
 
     public function numberOfCouponUses(Request $request){
-        // $coupons=Coupon::first();
-        // // dd(date_format(date_create($coupons->expiry_date),"Y-m"));
-        // dd(date_format(date_create($request->coupon_year.'-'.$request->coupon_month),"Y-m-d h:i:s"));
-        // $date=$request->coupon_year.'-'.$request->coupon_month;
-        // echo $date;exit();
-        $order=Order::where(['seller_id'=>Auth::user()->id,'coupon_code'=>$request->coupon_code])->get();
-       // $cupon_expiary_date=date_format(date_create($order->expiry_date),"Y-m");
+     
+        $cupo_active_date=$request->coupon_year.'-'.$request->coupon_month;
+        
+        $match = [['coupon_activate_date','=', $cupo_active_date],['seller_id', '=',Auth::user()->id],['coupon_code', '=',$request->coupon_code]];
+        $order=Order::where($match)->count();
+        if($order){
+            $result['order']=$order;
+            $result['status']=1;
+            return response()->json($result);
+        }else{
+            $result['status']=0;
+            return response()->json($result);
+        }
+        
         //dd($cupon_expiary_date,1);
-        dd($request->all());
+        //dd($request->all());
     }
 }

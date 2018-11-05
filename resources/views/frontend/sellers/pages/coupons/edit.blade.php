@@ -7,6 +7,7 @@
 
 			<div class="card-body">
 				<form action="{{url('seller/edit-coupon')}}/{{$coupon->id}}" method="post" id="productCuponForm">
+					<input type="hidden" class="cupon_code" data-rel="{{$coupon->id}}">
 					<fieldset class="mb-3">
 						<p class="text-uppercase font-size-sm" style="font-weight: 700;color:#797979;font-size:14px">Edit Coupon</p>
 						{{@csrf_field()}}
@@ -105,11 +106,13 @@
 			
 			<div class="card">
 				<div class="card-body">
+					
 					<span class="fa-stack fa-lg">
-						<i class="fa fa-circle-thin fa-stack-2x"></i>
-						<i class="fa fa-shopping-cart fa-stack-1x"></i>
+						<i class="fa fa-circle-thin fa-stack-2x fa-10x" style="color:#26a69a; font-size: 60px; margin: -12px 0px 0px -8px"></i>
+						<i class="fa fa-shopping-cart fa-stack-1x fa-2x" style="color:#26a69a"></i>
 					</span>
-					<h6 style="margin:-30px 0px 0px 50px">Number Of Uses <b>{{$coupon->number_of_uses}}</b></h6>
+				
+					<h6 style="margin:-30px 0px 0px 50px">Number Of Uses <b>{{$number_of_coupon_uses}}</b></h6>
 				</div>
 			</div>
 			
@@ -124,7 +127,7 @@
 							<div class="form-group">
 								<select class="form-control select" data-container-css-class="bg-teal-400" data-fouc class="coupon_month" id="coupon_month">
 									@for ($i = 0; $i < 12; ++$i)
-									<option value="<?=$i+1?>"> <?=date("F", strtotime("January +$i months"))?> </option>
+									<option value="<?=($i+1)?>"><?=date("F", strtotime("January +$i months"))?> </option>
 									@endfor
 
 								</select>
@@ -137,14 +140,16 @@
 									<?php
 									$years = range ( date( 'Y' ), date( 'Y')-2);
 									?>
-									@foreach ( $years as $year )
+									@foreach ($years as $year )
 									<option value="<?=$year?>"><?=$year?></option>
 									@endforeach
 								</select>
 							</div>
 						</div>
 					</div>
-					
+					<div>
+						<p class="couponUses"></p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -153,47 +158,13 @@
 
 	<div class="card">
     	<div class="card-body">
-    		<p class="text-uppercase font-size-sm" style="font-weight: 700;color:#797979;font-size:14px;margin-bottom: 10px">View Product Groups</p>
+    		<p class="text-uppercase font-size-sm" style="font-weight: 700;color:#797979;font-size:14px;margin-bottom: 10px">Latest orders using Coupon</p>
 			{!! $dataTable->table(['class' => 'table table-striped table-hover dt-responsive text-center', 'width' => '100%', 'cellspacing' => '0']) !!}
 		</div>
 	</div>
-	
+
 	<!-- /form inputs -->
 @endsection
 @push('scripts')
 {!! $dataTable->scripts() !!}
-<script type="text/javascript">
-$(function(){
-        $(document).change('.coupon_month',function(){
-           var coupon_code	 = $('#coupon_code').val();
-           var coupon_month	 = $('#coupon_month').val();
-           var coupon_year	 = $('#coupon_year').val();
-           var url            = SITE_URL+'/seller/number-of-coupon-uses';
-           var token          = $('input[name="_token"]').val();
-               $.ajax({
-                   url:url,
-                   method:'post',
-                   dataType:'json',
-                   async:false,
-                   data:{
-                    'coupon_code':coupon_code,
-                    'coupon_month':coupon_month,
-                    'coupon_year':coupon_year,
-                    '_token':token
-                   },
-                   success:function(response){
-                      if(response.status==1){
-                        $('tr#tr_'+coupon_code).hide('slow');
-                        //$(this).hide();
-                      }else{
-                        alert('Product group does not exists');
-                        return false;
-                      }
-                   }
-               });
-           
-        });
-    });
-</script>
-
 @endpush

@@ -35,11 +35,13 @@
 	</div>
 
 	@if(Session::has('message'))
-	<div class="flash-container" style="position:absolute;top:0;width: 100%;padding: 2px 1px 0px 1px">
-		<div class="alert {{Session::get('alert-class')}}" role="alert" style="margin-bottom:0px;text-align: center !important">
-		  	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		  	 {{Session::get('message')}}
-		</div>
+
+	<div class="flash-container" style="position:absolute;top:0;width: 100%;padding: 2px 1px 0px 1px;text-align: center">
+	<div class="alert {{Session::get('alert-class')}} text-white alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+		<span class="font-weight-semibold">{{Session::get('message')}}
 	</div>
+	</div>
+
 	@endif
 </div>

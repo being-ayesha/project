@@ -8,6 +8,7 @@ use App\models\frontend\User;
 use Auth;
 use Validator;
 use Common;
+use App\DataTables\frontend\sellers\LastOrderListDataTable;
 class DashboardController extends Controller
 {
     /**
@@ -15,12 +16,12 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(LastOrderListDataTable $dataTable)
     {
        //echo "dddd";exit();
        $data['siteName']  = 'Rocketr';
        $data['pageTitle'] = 'Home';
-       return view('frontend.sellers.pages.dashboard',$data);
+       return $dataTable->render('frontend.sellers.pages.dashboard',$data);
     }
 
     /**

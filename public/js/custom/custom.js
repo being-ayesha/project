@@ -443,3 +443,72 @@ $('#coupon_expaire_date').change(function(){
         });
     });
 
+// Total Number of coupon uses count in respected month and year
+  function GetMonthName(monthNumber) {
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return months[monthNumber - 1];
+  }
+$(function(){
+        $(document).change('.coupon_month',function(){
+           var coupon_code   = $('.cupon_code').attr('data-rel');
+           var coupon_month  = $('#coupon_month').val();
+           var coupon_year   = $('#coupon_year').val();
+           var url            = SITE_URL+'/seller/number-of-coupon-uses';
+           var token          = $('input[name="_token"]').val();
+               $.ajax({
+                   url:url,
+                   method:'post',
+                   dataType:'json',
+                   async:false,
+                   data:{
+                    'coupon_code':coupon_code,
+                    'coupon_month':coupon_month,
+                    'coupon_year':coupon_year,
+                    '_token':token
+                   },
+                   success:function(response){
+                      if(response.status==1){
+                        $('.couponUses').html('Total Coupon Uses '+GetMonthName(coupon_month)+' '+coupon_year+' : '+response.order);
+                        $('.couponUses').css('color','blue');
+                         return true;
+                      }else{
+                         $('.couponUses').html('No Data Found '+GetMonthName(coupon_month)+' '+coupon_year);
+                         $('.couponUses').css('color','red');
+                         return false;
+                      }
+                   }
+               });
+           
+        });
+    });
+
+
+//Delete Order
+    $(function(){
+        $(document).on('click','.deleteOrder',function(){
+           var orderId    = $(this).attr('data-rel');
+           var url        = SITE_URL+'/seller/delete-order';
+           var token      = $('input[name="_token"]').val();
+           if(confirm('Are you sure to delete?')){
+               $.ajax({
+                   url:url,
+                   method:'post',
+                   dataType:'json',
+                   async:false,
+                   data:{
+                   'orderId':orderId,
+                    '_token':token
+                   },
+                   success:function(response){
+                      if(response.status==1){
+                       $('tr#tr_'+orderId).hide('slow');
+                        //$(this).hide();
+                      }else{
+                        alert('Order does not exists');
+                        return false;
+                      }
+                   }
+               });
+           }
+        });
+    });

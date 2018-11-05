@@ -29,7 +29,7 @@ class Common
         {
             $class = 'danger';
         }
-        Session::flash('alert-class', 'alert-' . $class);
+        Session::flash('alert-class', 'bg-'. $class);
         Session::flash('message', $message);
     }
     /**

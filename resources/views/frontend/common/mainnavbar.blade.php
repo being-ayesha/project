@@ -2,8 +2,9 @@
 	<div class="navbar-brand">
 		<a href="{{url('/')}}" class="d-inline-block">
 			<img src="{{asset('public/frontend/global_assets/images/logo_light.png')}}" alt="">
-		</a>
+		</a>	
 	</div>
+
 
 	<!-- <div class="d-md-none">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">

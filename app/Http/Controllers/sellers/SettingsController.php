@@ -29,8 +29,8 @@ class SettingsController extends Controller
         }else{
         	//Add or Update account settings table
         	$accountSettings 									  = $settings==null?new AccountSetting():$settings;
-        	if($request->store_settings){
-	        	$accountSettings->seller_id                       = Auth::user()->id;
+	        $accountSettings->seller_id                           = Auth::user()->id;
+            if($request->store_settings){
 	        	$accountSettings->seller_page_description         = $request->seller_page_description;
 	        	$accountSettings->google_track_code               = $request->google_track_code;
 	        	$accountSettings->fb_track_code                   = $request->fb_track_code;
@@ -76,13 +76,20 @@ class SettingsController extends Controller
      */
 
     public function userStore($username){
-        $opts['siteName']        = Auth::user()->username;
+        $opts['siteName']        = $username;
         $opts['pageTitle']       = url('/');
-        $opts['productGroups']   = $productGroups = ProductGroups::where(['seller_id' => Auth::user()->id])->get();
-    	for($i=0;$i<count($productGroups);$i++){
-            $groupProducts[$i]   = Product::whereIn('id',json_decode($productGroups[$i]->product_id))->select('*')->get()->toArray();
+        $opts['user']            = User::where(['username' => $username])->first();
+        $cnt                     = ProductGroups::where(['seller_id' => $opts['user']->id])->count();
+        if($cnt>0){
+        $opts['productGroups']   = $productGroups = ProductGroups::where(['seller_id' => $opts['user']->id])->get();
+            for($i=0;$i<count($productGroups);$i++){
+                $groupProducts[$i]   = Product::whereIn('id',json_decode($productGroups[$i]->product_id))->select('*')->get()->toArray();
+            }
+            $opts['groupProductAll'] = $groupProducts;
+            return view('frontend.sellers.pages.stores.store',$opts);
+        }else{
+            return back();
         }
-        $opts['groupProductAll'] = $groupProducts;
-        return view('frontend.sellers.pages.stores.store',$opts);
+        
     }
 }

@@ -1,6 +1,7 @@
 @php
-  $uriAll         = ['seller/settings/account','seller/settings/payment','seller/settings/security','seller/coupons','seller/add-coupon','seller/edit-coupon/{id}','seller/product-groups','seller','seller/dashboard','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}','seller/edit-product-groups/{id}'];
+  $uriAll         = ['seller/settings/account','seller/settings/payment','seller/settings/security','seller/coupons','seller/add-coupon','seller/edit-coupon/{id}','seller/product-groups','seller','seller/dashboard','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}','seller/edit-product-groups/{id}','seller/orders/{status?}','seller/view-order/{id}'];
   $productsTabUri = ['seller/product-groups','seller/edit-product-groups/{id}','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}'];
+  $ordersTabUri   = ['seller/orders/{status?}','seller/view-order/{id}'];
   $couponsTabUri  = ['seller/coupons','seller/add-coupon','seller/edit-coupon/{id}'];
   $settingsTabUri = ['seller/settings/account','seller/settings/payment','seller/settings/security'];
   $currentUri     = Route::current()->uri();
@@ -29,18 +30,22 @@
 			<div class="card-body">
 				<div class="media">
 					<div class="mr-3">
-						<a href="#"><img src="{{asset('public/frontend/global_assets/images/placeholders/placeholder.jpg')}}" width="38" height="38" class="rounded-circle" alt=""></a>
+						@if(Auth::user()->profile_photo)
+						<img style="width:38px;height: 38px" src="{{url('public/uploads/sellers/profilephoto')}}/{{Auth::user()->profile_photo}}" class="rounded-circle profile-image" alt="profile-image" name="image">
+						@else
+						<img style="width:38px;height: 38px" src="{{url('public/uploads/sellers/profilephoto/nouser.jpg')}}" class="rounded-circle profile-image" alt="profile-image" name="image" width="38" height="38">
+						@endif
 					</div>
 
 					<div class="media-body">
-						<div class="media-title font-weight-semibold">Victoria Baker</div>
+						<div class="media-title font-weight-semibold">{{Auth::user()->username}}</div>
 						<div class="font-size-xs opacity-50">
-							<i class="icon-pin font-size-sm"></i> &nbsp;Santa Ana, CA
+							<span></span>
 						</div>
 					</div>
 
 					<div class="ml-3 align-self-center">
-						<a href="#" class="text-white"><i class="icon-cog3"></i></a>
+						<a href="{{url('seller/settings/account')}}" class="text-white"><i class="icon-cog3"></i></a>
 					</div>
 				</div>
 			</div>
@@ -64,7 +69,7 @@
 				</li>
 				@if (in_array($currentUri,$uriAll)) 
 					<li class="nav-item nav-item-submenu">
-						<a href="#" class="nav-link <?= (in_array($currentUri,$productsTabUri))?'active':''?>"><i class="icon-copy"></i> <span>Products</span></a>
+						<a href="#" class="nav-link <?= (in_array($currentUri,$productsTabUri))?'active':''?>"><i class="icon-cube"></i> <span>Products</span></a>
 						<ul class="nav nav-group-sub" style="display:<?= (in_array($currentUri,$productsTabUri))? 'block' : ''?>" data-submenu-title="Layouts">
 							<li class="nav-item"><a href="{{url('seller/products')}}" class="nav-link <?= ($currentUri == 'seller/products') ? 'active' : ''?>">View All Products</a></li>
 							<!-- <li class="nav-item "><a href="{{url('seller/add-product-type')}}" class="nav-link <?= ($currentUri == 'seller/add-product-type') ? 'active' : ''?>">Add Product Type</a></li> -->
@@ -76,8 +81,14 @@
 				@endif
 
 				@if (in_array($currentUri,$uriAll)) 
+					<li class="nav-item ">
+						<a href="{{url('seller/orders')}}" class="nav-link <?= (in_array($currentUri,$ordersTabUri))?'active':''?>"><i class="icon-cart"></i> <span>Orders</span></a>
+					</li>
+				@endif
+
+				@if (in_array($currentUri,$uriAll)) 
 					<li class="nav-item nav-item-submenu">
-						<a href="#" class="nav-link <?= (in_array($currentUri,$couponsTabUri))?'active':''?>"><i class="icon-copy"></i> <span>Coupons</span></a>
+						<a href="#" class="nav-link <?= (in_array($currentUri,$couponsTabUri))?'active':''?>"><i class="icon-price-tag2"></i> <span>Coupons</span></a>
 						<ul class="nav nav-group-sub" style="display:<?= (in_array($currentUri,$couponsTabUri))? 'block' : ''?>" data-submenu-title="Layouts">
 							<li class="nav-item"><a href="{{url('seller/coupons')}}" class="nav-link <?= ($currentUri == 'seller/coupons') ? 'active' : ''?>">View All Coupons</a></li>
 							<li class="nav-item "><a href="{{url('seller/add-coupon')}}" class="nav-link <?= ($currentUri == 'seller/add-coupon') ? 'active' : ''?>">Add A Coupon</a></li>
@@ -86,7 +97,7 @@
 				@endif
 				@if (in_array($currentUri,$uriAll)) 
 					<li class="nav-item nav-item-submenu">
-						<a href="#" class="nav-link <?= (in_array($currentUri,$settingsTabUri))?'active':''?>"><i class="icon-copy"></i> <span>Settings</span></a>
+						<a href="#" class="nav-link <?= (in_array($currentUri,$settingsTabUri))?'active':''?>"><i class="icon-cog3"></i> <span>Settings</span></a>
 						<ul class="nav nav-group-sub" style="display:<?= (in_array($currentUri,$settingsTabUri))? 'block' : ''?>" data-submenu-title="Layouts">
 							<li class="nav-item"><a href="{{url('seller/settings/account')}}" class="nav-link <?= ($currentUri == 'seller/settings/account') ? 'active' : ''?>">Account Settings</a></li>
 							<li class="nav-item "><a href="{{url('seller/settings/payment')}}" class="nav-link <?= ($currentUri == 'seller/settings/payment') ? 'active' : ''?>">Payment Settings</a></li>
