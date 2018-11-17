@@ -18,14 +18,13 @@ class DashboardController extends Controller
      */
     public function index(LastOrderListDataTable $dataTable)
     {
-       //echo "dddd";exit();
        $data['siteName']  = 'Rocketr';
        $data['pageTitle'] = 'Home';
        return $dataTable->render('frontend.sellers.pages.dashboard',$data);
     }
 
     /**
-     * Show the form for creating a new resource.
+     *  Authenticatation to the system.
      *
      * @return \Illuminate\Http\Response
      */
@@ -36,7 +35,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Authenticatation to the system.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

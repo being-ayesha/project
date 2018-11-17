@@ -13,7 +13,7 @@ class ProductGroupsController extends Controller
 {
     
     /**
-    * Load the product group views
+    * Load the product group views and store the data to product groups
     */
     public function index(Request $request,ProductGroupsDataTable $dataTable)
     {

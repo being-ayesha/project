@@ -111,12 +111,14 @@ class ProductController extends Controller
                 $product->product_type_id            = $productType->id;
                 $product->stock                      = $request->stock_unlimited=='on'?-1:$request->stock_limited;
                 //Downloadable file upload codes for any type of file starts here
-                $downloadable_file                   = $request->file('downloadable_file');
-                $destinationPath                     = public_path('/uploads/sellers/downloadablefiles');
-                $fileName                            = time().'_'.$downloadable_file->getClientOriginalName();
-                $downloadable_file->move($destinationPath,$fileName);
-                //Downloadable file upload for any type of file codes ends here
-                $product->downloadable_file          = $fileName;
+                if($request->has('downloadable_file')){
+                    $downloadable_file                   = $request->file('downloadable_file');
+                    $destinationPath                     = public_path('/uploads/sellers/downloadablefiles');
+                    $fileName                            = time().'_'.$downloadable_file->getClientOriginalName();
+                    $downloadable_file->move($destinationPath,$fileName);
+                    //Downloadable file upload for any type of file codes ends here
+                    $product->downloadable_file          = $fileName;
+                }
             }else if($request->product_type=='code'){
                 $product->product_type_id            = $productType->id;
                 $product->added_codes                = json_encode($request->code_item);
