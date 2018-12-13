@@ -63,3 +63,15 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Project Instruction
+
+Step 1: Download Project from [Click Download]( https://code.myworkforce.com/TechVillage/rocketr-clone-project.git)
+Step 2: Got to project file location and run command : composer update  
+Step 3: Creta a databse in your phpMyadmin
+Step 4: Rename .env.example to .env and change details from .env file 
+	DB_DATABASE=your_database_name
+	DB_USERNAME=your_database_username
+	DB_PASSWORD=your_database_password
+Step 5: Run Command : php artisan migrate
+Step 6: Run Command : php artisan db:seed
