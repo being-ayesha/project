@@ -5,9 +5,11 @@ namespace App\Http\Controllers\frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\frontend\User;
+use App\models\frontend\UserLogs;
 use Auth;
 use Validator;
 use Common;
+use Session;
 class LoginController extends Controller
 {
     /**
@@ -29,6 +31,8 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request)
     {
+        $country_name       =Session::get('country_name');
+
         $rules = [
                 'email' => 'required',
                 'password' => 'required'
@@ -43,13 +47,33 @@ class LoginController extends Controller
             return back()->withErrors($validator)->withInput();
         }else{
             $user                    = User::where(['email' => $request->email])->first();
+            
+            if($user){
+                $userlogs                       = new UserLogs();
+                $userlogs->user_id              = $user->id; 
+                $userlogs->last_login_ip        = $request->ip();
+                $userlogs->last_login_browser   = $request->header('User-Agent');
+                $userlogs->last_login_country   = $country_name['geoplugin_city']." - ".$country_name['geoplugin_region']." - ".$country_name['geoplugin_countryName'];
+                $userlogs->last_login_at        = date('Y-m-d H:i:s');
+            }
+            
             $credentails             = [];
             $credentails['email']    = $request->email;
             $credentails['password'] = $request->password;
             if(@$user->status!='Inactive'){
-                if(Auth::attempt($credentails)){
+                if(Auth::attempt($credentails)){   
+
+                    $userlogs->last_login_status    = "Success";
+                    $userlogs->last_login_details   ="";
+                    $userlogs->save(); 
+
                     return redirect('dashboard');
                 }else{
+                    if($user){
+                        $userlogs->last_login_status    = "Wrong Password";
+                        $userlogs->last_login_details   ="";
+                        $userlogs->save();
+                    }
                     Common::one_time_message('danger','Log In Failed. Please Check Your Email/Password.');
                     return back()->withInput();
                 }

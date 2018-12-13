@@ -35,7 +35,8 @@
 	<script src="{{asset('public/frontend/assets/js/app.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/demo_pages/dashboard.js')}}"></script>
 	<!-- /theme JS files -->
-	
+	<script src="{{ asset('public/frontend/plugins/jqueryvalidate/jquery.validate.min.js') }}" type="text/javascript"></script>
+
 
 	<style type="text/css">
 		.dashboardHeader{
@@ -50,6 +51,9 @@
 		}
 		.linkColor:hover{
 			background: linear-gradient(to right, #33ccff 0%, #00cc66 100%);
+		}
+		.error{
+			color:red !important;
 		}
 	</style>
 </head>

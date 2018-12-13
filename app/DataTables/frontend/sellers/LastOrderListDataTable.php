@@ -25,7 +25,7 @@ class LastOrderListDataTable extends DataTable
             })
              ->addColumn('product_id', function ($order)
             {
-                return "<a href=".url($order->product->product_uuid).">".$order->product->product_title."</a>";
+                return "<a href=".url('buy/'.base64_encode(Auth::user()->username).'/'.$order->product->product_uuid).">".$order->product->product_title."</a>";
             })
            
             ->addColumn('action', function ($coupon)
@@ -51,9 +51,9 @@ class LastOrderListDataTable extends DataTable
      */
     public function query()
     {
-        //$query = Order::where(['seller_id'=>Auth::user()->id])->select('*')->take(1)->orderBy('id', 'desc');
-        $query = Order::where(['seller_id'=>Auth::user()->id]);
-       //print_r($query->toSql());exit();
+        
+        $query = Order::where(['seller_id'=>Auth::user()->id])->orderBy('id', 'desc')->take(10);
+      
         return $this->applyScopes($query);
     }
 
@@ -77,7 +77,10 @@ class LastOrderListDataTable extends DataTable
             ->parameters([
             'dom' => 'lBfrtip',
             'buttons' => ['csv'],
-            //'pageLength' => [[1],[10]],
+            "iDisplayLength"=> 10,
+            "bPaginate"=> false,
+            "bFilter"=>false,
+            "bInfo"> false,
             ]);
     }
 

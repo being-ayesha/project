@@ -51,37 +51,65 @@
 		                      	<div class="tab-pane fade {{$j==0?'show active':''}}" id="v-pills-{{$j}}" role="tabpanel" aria-labelledby="v-pills-{{$j}}-tab">
 		                              @php $cnt = count($productAll);@endphp
 		                              @for($i=0;$i<$cnt;$i++)
-		                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 searchArea" style="float: left;" id="{{$productAll[$i]['product_title']}}">
-		                                	<a href="{{url('seller/buy')}}/{{base64_encode($user->username)}}/{{$productAll[$i]['product_uuid']}}"><img class="rounded mx-auto d-block" style="width: 100px;height: 90px" src="{{url('public/uploads/sellers/products')}}/{{$productAll[$i]['product_photo']}}" alt="{{$productAll[$i]['product_title']}}"></a>
+		                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 default" style="float: left;display: block;border:1px solid #dededcc;border-radius:5px" id="{{$productAll[$i]['product_title']}}">
+		                                	<a href="{{url('buy')}}/{{base64_encode($user->username)}}/{{$productAll[$i]['product_uuid']}}"><img class="rounded mx-auto d-block" style="width: 100px;height: 90px" src="{{url('public/uploads/sellers/products')}}/{{$productAll[$i]['product_photo']}}" alt="{{$productAll[$i]['product_title']}}"></a>
 		                                	<h1 style="text-align: center;"><a href="{{url('buy')}}/{{base64_encode($user->username)}}/{{$productAll[$i]['product_uuid']}}" style="font-size: 14px">{{$productAll[$i]['product_title']}}</a></h1>
 		                                	@if($productAll[$i]['stock']=='-1')
-		                                		<p style="color:#007bff;text-align: center;"><span class="text-right">${{$productAll[$i]['price']}}</span></p>
+		                                		<p style="color:#007bff;text-align: center;"><span class="text-right">${{number_format($productAll[$i]['price'],2)}}</span></p>
 		                                	@else
-		                                		<p style="color:#007bff;text-align: center;">Stock:&nbsp;<span class="text-danger text-left">{{$productAll[$i]['stock']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-right">${{$productAll[$i]['price']}}</span></p>
+		                                		<p style="color:#007bff;text-align: center;">Stock:&nbsp;<span class="text-danger text-left">{{$productAll[$i]['stock']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-right">${{number_format($productAll[$i]['price'],2)}}</span></p>
 		                                	@endif
 		                                </div>
 		                              @endfor
+		                              
 		                              @php $j++;@endphp
+
 		                        </div>
 		                             @endforeach
+		                             <!--Print Product for searching-->
+		                              @php $cProductsCnt = count($commonProducts);@endphp
+			                              @for($k=0;$k<$cProductsCnt;$k++)
+			                              	 @php $l=0;@endphp
+				                              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 searchArea" style="float: left;display: none;border:1px solid #dededcc;border-radius:5px" id="{{$commonProducts[$k][$l]['product_title']}}">
+				                                	<a href="{{url('buy')}}/{{base64_encode($user->username)}}/{{$commonProducts[$k][$l]['product_uuid']}}"><img class="rounded mx-auto d-block" style="width: 100px;height: 90px" src="{{url('public/uploads/sellers/products')}}/{{$commonProducts[$k][$l]['product_photo']}}" alt="{{$commonProducts[$k][$l]['product_title']}}"></a>
+				                                	<h1 style="text-align: center;"><a href="{{url('buy')}}/{{base64_encode($user->username)}}/{{$commonProducts[$k][$l]['product_uuid']}}" style="font-size: 14px">{{$commonProducts[$k][$l]['product_title']}}</a></h1>
+				                                	@if($commonProducts[$k][$l]['stock']=='-1')
+				                                		<p style="color:#007bff;text-align: center;"><span class="text-right">${{number_format($commonProducts[$k][$l]['price'],2)}}</span></p>
+				                                	@else
+				                                		<p style="color:#007bff;text-align: center;">Stock:&nbsp;<span class="text-danger text-left">{{$commonProducts[$k][$l]['stock']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-right">${{number_format($commonProducts[$k][$l]['price'],2)}}</span></p>
+				                                	@endif
+				                              </div>
+			                              @endfor
 		                   </div>
 		               </div>
 		            </div>
 		        </div>
 	      </div>
+	      
   </div>
 @endsection
 @push('scripts')
  <script type="text/javascript">
+ 	//Search functions starts here
  	$('.text').keyup(function submitClosure(ev) {
 	    $('.searchArea').each(function inputElementClosure(index, element) {
-	        element = $(element);
-	        if (element.attr('id').indexOf(ev.target.value) > -1) {
-	            element.show();
-	        } else {
-	            element.hide();
-	        }
+		        element      = $(element);
+		        fullString   = $(element).attr('id').toLowerCase();
+		        searchString = $('.text').val().toLowerCase();
+		        if(searchString!=''){
+			        if(fullString.match(searchString)){
+			        	$('.default').css('display','none');
+			        	element.show();
+			        }else{
+			            element.hide();
+			            $('.default').css('display','none');
+			        }
+		    	}else{
+		    		$('.searchArea').css('display','none');
+		    		$('.default').css('display','block');
+		    	}
 	    });
 	});
+	//Search functions ends here
  </script>
 @endpush

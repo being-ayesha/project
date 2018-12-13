@@ -222,18 +222,36 @@
             });
         }
     }
-    //Success message hide after 5 seconds
-    $(".flash-container").fadeTo(2000, 500).slideUp(500, function(){
-        $(".flash-container").slideUp(500);
+    //Success message hide after 10 seconds
+    $(".flash-container").fadeTo(2000, 1000).slideUp(1000, function(){
+        $(".flash-container").slideUp(1000);
     });
 
     //Validate product group form during add
+
+    $('#product_id').change(function(){
+      $(this).valid()
+    });
+    
     $('#productGroupForm').validate({
         rules:{
           product_group_title:{
             required:true
+          },
+          'product_id[]':{
+            required:true
+          }
+        },
+
+        errorPlacement: function (error, element) {
+          if(element.attr("id") == "product_id") {
+            error.appendTo('.error_group_product_id');
+          } else {
+            error.insertAfter(element);
           }
         }
+
+
     });
     //Code for product group name check
     //setup before functions
@@ -448,39 +466,38 @@ $('#coupon_expaire_date').change(function(){
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return months[monthNumber - 1];
   }
-$(function(){
-        $(document).change('.coupon_month',function(){
-           var coupon_code   = $('.cupon_code').attr('data-rel');
-           var coupon_month  = $('#coupon_month').val();
-           var coupon_year   = $('#coupon_year').val();
-           var url            = SITE_URL+'/seller/number-of-coupon-uses';
-           var token          = $('input[name="_token"]').val();
-               $.ajax({
-                   url:url,
-                   method:'post',
-                   dataType:'json',
-                   async:false,
-                   data:{
-                    'coupon_code':coupon_code,
-                    'coupon_month':coupon_month,
-                    'coupon_year':coupon_year,
-                    '_token':token
-                   },
-                   success:function(response){
-                      if(response.status==1){
-                        $('.couponUses').html('Total Coupon Uses '+GetMonthName(coupon_month)+' '+coupon_year+' : '+response.order);
-                        $('.couponUses').css('color','blue');
-                         return true;
-                      }else{
-                         $('.couponUses').html('No Data Found '+GetMonthName(coupon_month)+' '+coupon_year);
-                         $('.couponUses').css('color','red');
-                         return false;
-                      }
-                   }
-               });
-           
-        });
+  $(function(){
+    $(document).on('change','#coupon_month',function(){
+      var coupon_code   = $('.cupon_code').attr('data-rel');
+      var coupon_month  = $('#coupon_month').val();
+      var coupon_year   = $('#coupon_year').val();
+      var url            = SITE_URL+'/seller/number-of-coupon-uses';
+      var token          = $('input[name="_token"]').val();
+      $.ajax({
+       url:url,
+       method:'post',
+       dataType:'json',
+       async:false,
+       data:{
+        'coupon_code':coupon_code,
+        'coupon_month':coupon_month,
+        'coupon_year':coupon_year,
+        '_token':token
+      },
+      success:function(response){
+        if(response.status==1){
+          $('.couponUses').html('Total Coupon Uses '+GetMonthName(coupon_month)+' '+coupon_year+' : '+response.order);
+          $('.couponUses').css('color','blue');
+          return true;
+        }else{
+         $('.couponUses').html('No Data Found '+GetMonthName(coupon_month)+' '+coupon_year);
+         $('.couponUses').css('color','red');
+         return false;
+       }
+     }
+   }); 
     });
+  });
 
 
 //Delete Order
@@ -512,3 +529,67 @@ $(function(){
            }
         });
     });
+
+// New marketing email form Validation
+
+$(function(){
+
+$('#buyers_email_new').change(function(){
+  $(this).valid()
+});
+
+      $.validator.addMethod('ckrequired', function () { 
+        var messageLength =  CKEDITOR.instances['full-editor'].getData(); 
+        if(messageLength.length !== 0){
+          $('#err_message').html('');
+          return true;
+        }else{
+          $('#err_message').html('This field is required.');
+          return false;
+        }
+      });
+
+   $('#newMarketingFrom').validate({
+        rules: {
+             ignore: [],
+            "buyers_email[]":{
+                required: true
+            },
+            subject:{
+                required: true
+            },
+            content: { 
+                ckrequired: true,
+            }
+        },
+        errorPlacement: function (error, element) {
+          if(element.attr("id") == "buyers_email_new") {
+            error.appendTo('.error_buyer_email');
+          }
+           else {
+            error.insertAfter(element);
+          }
+        },
+
+    }); 
+
+});
+
+// Change Password form Validation
+
+$(function(){
+  $('#changePasswordForm').validate({
+     rules: {
+            current_password:{
+                required: true
+            },
+            new_password:{
+                required: true
+            },
+            confirm_password:{
+               required: true,
+               equalTo: "#new_password"
+            }
+        },
+  });
+});

@@ -27,9 +27,12 @@ var GoogleAreaStacked = function() {
         // Initialize chart
         google.charts.load('current', {
             callback: function () {
-
+                
+                
+                if(checkData()==true){     
                 // Draw chart
                 drawAreaStackedChart();
+                }
 
                 // Resize on sidebar width change
                 $(document).on('click', '.sidebar-control', drawAreaStackedChart);
@@ -46,32 +49,36 @@ var GoogleAreaStacked = function() {
             packages: ['corechart']
         });
 
+         function checkData(){
+            if(document.getElementById('google-area-stacked_value').value!=''){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
         // Chart settings
         function drawAreaStackedChart() {
-
             // Define charts element
             var area_stacked_element = document.getElementById('google-area-stacked');
+            var area_stacked_element_values = document.getElementById('google-area-stacked_value').value;
+                
 
             // Data
-            var data = google.visualization.arrayToDataTable([
-                ['Year', 'Cars', 'Trucks', 'Drones', 'Segways'],
-                ['2013',  870,  460, 310, 220],
-                ['2014',  460,   720, 220, 460],
-                ['2015',  930,  640, 340, 330],
-                ['2016',  1000,  400, 180, 500]
-            ]);
+            var data = google.visualization.arrayToDataTable($.parseJSON(area_stacked_element_values));
 
             // Options
             var options_area_stacked = {
                 fontName: 'Roboto',
-                height: 400,
+                height: 300,
                 curveType: 'function',
                 fontSize: 12,
                 areaOpacity: 0.4,
                 chartArea: {
                     left: '5%',
                     width: '94%',
-                    height: 350
+                    height: 250
+
                 },
                 isStacked: true,
                 pointSize: 4,
@@ -79,6 +86,7 @@ var GoogleAreaStacked = function() {
                     textStyle: {
                         fontName: 'Roboto',
                         fontSize: 13
+                        
                     }
                 },
                 lineWidth: 1.5,
@@ -89,7 +97,7 @@ var GoogleAreaStacked = function() {
                         italic: false
                     },
                     gridlines:{
-                        color: '#e5e5e5',
+                        color: '#fcfcfc',
                         count: 10
                     },
                     minValue: 0

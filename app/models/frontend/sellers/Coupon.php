@@ -5,6 +5,7 @@ namespace App\models\frontend\sellers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\models\frontend\PaymentMethod;
+use App\models\frontend\sellers\Product;
 use Auth;
 class Coupon extends Model
 {
@@ -18,7 +19,7 @@ class Coupon extends Model
     	$individualGroupProducts = Product::whereIn('id',json_decode($groupProductIds))->select('product_title','product_uuid')->get()->toArray();
     	$separator               = $groupProducts = '';
 		foreach ($individualGroupProducts as $individualGroupProduct){
-		    $groupProducts .="<a href=".$individualGroupProduct['product_uuid'].">".$separator . $individualGroupProduct['product_title']."</a>";
+		    $groupProducts .="<a target='_blank' href=".url('buy/'.base64_encode(Auth::user()->username).'/'.$individualGroupProduct['product_uuid']).">".$separator . $individualGroupProduct['product_title']."</a>";
 		    $separator      = ',';
 		}
 		return $groupProducts;
@@ -47,4 +48,5 @@ class Coupon extends Model
         }
         return $groupPayment;
     }
+
 }

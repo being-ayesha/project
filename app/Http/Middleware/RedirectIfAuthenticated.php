@@ -14,6 +14,8 @@ class RedirectIfAuthenticated
                     return redirect('seller/dashboard');
                 }else if($prefix=='merchants'){
                     return redirect('merchants/dashboard');
+                }else if($prefix=='affiliates'){
+                    return redirect('affiliates/dashboard');
                 }else{
                     return redirect('dashboard'); 
                 }

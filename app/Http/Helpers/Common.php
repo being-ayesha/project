@@ -4,6 +4,7 @@ namespace App\Http\Helpers;
 use App\Models\Permission;
 use App\Models\PermissionRole;
 use App\Models\RoleUser;
+use App\models\frontend\sellers\Product;
 use Session;
 
 class Common
@@ -12,7 +13,7 @@ class Common
     {
         setlocale(LC_ALL, 'en_US.UTF8');
     }
-
+    
     public static function d($var, $a = false)
     {
         echo "<pre>";

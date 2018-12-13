@@ -24,12 +24,15 @@ var GoogleColumnBasic = function() {
             return;
         }
 
+
         // Initialize chart
         google.charts.load('current', {
             callback: function () {
 
                 // Draw chart
+                if(checkData()==true){
                 drawColumn();
+                }
 
                 // Resize on sidebar width change
                 $(document).on('click', '.sidebar-control', drawColumn);
@@ -46,31 +49,33 @@ var GoogleColumnBasic = function() {
             packages: ['corechart']
         });
 
+        function checkData(){
+            if(document.getElementById('google-column-value').value!=''){
+                return true;
+            }else{
+                
+                return false;
+            }
+        }
+
         // Chart settings
         function drawColumn() {
 
             // Define charts element
             var line_chart_element = document.getElementById('google-column');
-
+            var line_chart_element_values = document.getElementById('google-column-value').value;
             // Data
-            var data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales', 'Expenses'],
-                ['2004',  1000,      400],
-                ['2005',  1170,      460],
-                ['2006',  660,       1120],
-                ['2007',  1030,      540]
-            ]);
-
-
+            
+            var data = google.visualization.arrayToDataTable( $.parseJSON(line_chart_element_values)); 
             // Options
             var options_column = {
                 fontName: 'Roboto',
-                height: 400,
+                height: 300,
                 fontSize: 12,
                 chartArea: {
                     left: '5%',
                     width: '94%',
-                    height: 350
+                    height: 250
                 },
                 tooltip: {
                     textStyle: {
@@ -79,7 +84,7 @@ var GoogleColumnBasic = function() {
                     }
                 },
                 vAxis: {
-                    title: 'Sales and Expenses',
+                    title: 'Sales',
                     titleTextStyle: {
                         fontSize: 13,
                         italic: false

@@ -1,8 +1,12 @@
 @php
-  $uriAll         = ['seller/settings/account','seller/settings/payment','seller/settings/security','seller/coupons','seller/add-coupon','seller/edit-coupon/{id}','seller/product-groups','seller','seller/dashboard','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}','seller/edit-product-groups/{id}','seller/orders/{status?}','seller/view-order/{id}'];
-  $productsTabUri = ['seller/product-groups','seller/edit-product-groups/{id}','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}'];
+  $uriAll         = ['seller/product-embed','seller/settings/account','seller/settings/payment','seller/settings/security','seller/coupons','seller/add-coupon','seller/edit-coupon/{id}','seller/product-groups','seller','seller/dashboard','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}','seller/edit-product-groups/{id}','seller/orders/{status?}','seller/view-order/{id}','seller/new-marketing','seller/marketings','seller/analytics','seller/feedbacks','seller/affiliates','seller/payouts'];
+  $productsTabUri = ['seller/product-embed','seller/product-groups','seller/edit-product-groups/{id}','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}'];
   $ordersTabUri   = ['seller/orders/{status?}','seller/view-order/{id}'];
   $couponsTabUri  = ['seller/coupons','seller/add-coupon','seller/edit-coupon/{id}'];
+  $marketingTabUri= ['seller/new-marketing','seller/marketings'];
+  $analyticsTabUri= ['seller/analytics'];
+  $feedbackTabUri = ['seller/feedbacks'];
+  $affiliatesTabUri= ['seller/affiliates','seller/payouts'];
   $settingsTabUri = ['seller/settings/account','seller/settings/payment','seller/settings/security'];
   $currentUri     = Route::current()->uri();
 @endphp
@@ -67,6 +71,17 @@
 						</span>
 					</a>
 				</li>
+				@if(in_array($currentUri,$uriAll)) 
+				<li class="nav-item">
+					<a href="{{url('seller/analytics')}}" class="nav-link {{ ($currentUri == 'seller/analytics') ? 'active' : ''  }}">
+						<i class="icon-stats-bars2"></i>
+						<span>
+							Analytics
+						</span>
+					</a>
+				</li>
+				@endif
+
 				@if (in_array($currentUri,$uriAll)) 
 					<li class="nav-item nav-item-submenu">
 						<a href="#" class="nav-link <?= (in_array($currentUri,$productsTabUri))?'active':''?>"><i class="icon-cube"></i> <span>Products</span></a>
@@ -75,7 +90,7 @@
 							<!-- <li class="nav-item "><a href="{{url('seller/add-product-type')}}" class="nav-link <?= ($currentUri == 'seller/add-product-type') ? 'active' : ''?>">Add Product Type</a></li> -->
 							<li class="nav-item "><a href="{{url('seller/add-product')}}" class="nav-link <?= ($currentUri == 'seller/add-product') ? 'active' : ''?>">Add A Product</a></li>
 							<li class="nav-item"><a href="{{url('seller/product-groups')}}" class="nav-link <?= ($currentUri == 'seller/product-groups' || $currentUri == 'seller/edit-product-groups/{id}') ? 'active' : ''?>">Manage Product Groups</a></li>
-							<li class="nav-item"><a href="#" class="nav-link">Product Embed Generator</a></li>
+							<li class="nav-item"><a href="{{url('seller/product-embed')}}" class="nav-link  <?= ($currentUri == 'seller/product-embed') ? 'active' : ''?>">Product Embed Generator</a></li>
 						</ul>
 					</li>
 				@endif
@@ -95,6 +110,39 @@
 						</ul>
 					</li>
 				@endif
+
+				@if (in_array($currentUri,$uriAll)) 
+				<li class="nav-item">
+					<a href="{{url('seller/feedbacks')}}" class="nav-link {{ ($currentUri == 'seller/feedbacks') ? 'active' : ''  }}">
+						<i class="icon-file-text"></i>
+						<span>
+							Feedback
+						</span>
+					</a>
+				</li>
+				@endif
+
+				@if (in_array($currentUri,$uriAll)) 
+					<li class="nav-item nav-item-submenu">
+						<a href="#" class="nav-link <?= (in_array($currentUri,$marketingTabUri))?'active':''?>"><i class="icon-file-stats"></i> <span>Marketing</span></a>
+						<ul class="nav nav-group-sub" style="display:<?= (in_array($currentUri,$marketingTabUri))? 'block' : ''?>" data-submenu-title="Layouts">
+							<li class="nav-item"><a href="{{url('seller/new-marketing')}}" class="nav-link <?= ($currentUri == 'seller/new-marketing') ? 'active' : ''?>">New Marketing Email</a></li>
+							<li class="nav-item "><a href="{{url('seller/marketings')}}" class="nav-link <?= ($currentUri == 'seller/marketings') ? 'active' : ''?>">View Previously Sent Marketing Emails</a></li>
+						</ul>
+					</li>
+				@endif
+
+				@if (in_array($currentUri,$uriAll)) 
+					<li class="nav-item nav-item-submenu">
+						<a href="#" class="nav-link <?= (in_array($currentUri,$affiliatesTabUri))?'active':''?>"><i class="icon-user"></i> <span>Affiliates</span></a>
+						<ul class="nav nav-group-sub" style="display:<?= (in_array($currentUri,$affiliatesTabUri))? 'block' : ''?>" data-submenu-title="Layouts">
+							<li class="nav-item"><a href="{{url('seller/affiliates')}}" class="nav-link <?= ($currentUri == 'seller/affiliates') ? 'active' : ''?>">View Affiliates</a></li>
+							<li class="nav-item "><a href="{{url('seller/payouts')}}" class="nav-link <?= ($currentUri == 'seller/payouts') ? 'active' : ''?>">Affiliate Payouts</a></li>
+						</ul>
+					</li>
+				@endif
+
+
 				@if (in_array($currentUri,$uriAll)) 
 					<li class="nav-item nav-item-submenu">
 						<a href="#" class="nav-link <?= (in_array($currentUri,$settingsTabUri))?'active':''?>"><i class="icon-cog3"></i> <span>Settings</span></a>

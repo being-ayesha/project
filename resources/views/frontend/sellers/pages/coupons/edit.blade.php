@@ -2,6 +2,27 @@
 @section('content')
 	<!-- Form inputs -->
 	<div class="row">
+		@if(@$coupon->deleted_at==1)
+		<div class="col-lg-12">
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+				<span><i class="fa fa-info-circle"></i>&nbsp; This is a deleted coupon.</span>
+				
+			</div>
+		</div>
+		@endif
+
+		@if(@$interval_day<=0)
+		<div class="col-lg-12">
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+
+				<span><i class="fa fa-info-circle"></i>&nbsp; This is an expired coupon.</span>
+				
+			</div>
+		</div>
+		@endif
+		
 		<div class="col-lg-6">
 		<div class="card">
 

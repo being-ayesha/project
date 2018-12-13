@@ -23,7 +23,7 @@ class ProductsDataTable extends DataTable
             })
             ->editColumn('product_title', function ($product)
             {
-                return '<a href="' . url('seller/edit-product/' . @$product->product_uuid) . '">'.@$product->product_title.'</a>';
+                return '<a target="_blank" href="'.url('buy/'.base64_encode(Auth::user()->username).'/'.$product->product_uuid).'">'.@$product->product_title.'</a>';
             })
             ->editColumn('product_photo',function($product){
                 //$img = $product->product_photo;

@@ -26,6 +26,7 @@
 							        	<option value="{{$product->id}}">{{$product->product_title}}</option>
 							        @endforeach
 							  </select>
+							  <div class="error_group_product_id"></div>
 							  @if($errors->has('product_id'))
 							   <div class="form-text text-danger">
 							   	  {{$errors->first('product_id')}}

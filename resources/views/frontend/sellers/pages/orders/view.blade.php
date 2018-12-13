@@ -62,7 +62,7 @@
 							</tr>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Coupon</td>
-								<td style="padding: 5px;color: #2196f3">{{$order->coupon_code}}</td>
+								<td style="padding: 5px;color: #2196f3">{{(@$order->coupon_code)?@$order->coupon_code:'None'}}</td>
 							</tr>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Buyer Ip</td>
@@ -92,46 +92,74 @@
 						<tbody>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Payment Method</td>
-								<td style="padding: 5px;color: #2196f3">{{$order->payment->name}}</td>	
+								<td style="padding: 5px;color: #2196f3">{{@$order->payment->name}}</td>	
 							</tr>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Transaction Id</td>
-								<td style="padding: 5px;color: #2196f3"></td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->transaction_id}}</td>
 							</tr>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Payment Status</td>
-								<td style="padding: 5px;color: #2196f3"></td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->payment_status}}</td>
 							</tr>
 
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Paypal E-mail</td>
-								<td style="padding: 5px;color: #2196f3">{{$order->buyer_email}}</td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->buyer_email}}</td>
 							</tr>
 
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Amount Paid</td>
-								<td style="padding: 5px;color: #2196f3">{{$order->amount}}</td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->amount}}</td>
 							</tr>
 
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Paypal Fees</td>
-								<td style="padding: 5px;color: #2196f3"></td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->payment_method_fees}}</td>
 							</tr>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Paypal Sender Name</td>
-								<td style="padding: 5px;color: #2196f3"></td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->sender_name}}</td>
 							</tr>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Paypal Sender Address</td>
 								<td style="padding: 5px;color: #2196f3"></td>
 							</tr>
+
+							<tr>
+								<td colspan="2" style="color: #2196f3;">
+									<table style="margin:-15px 0px 0px 135px">
+										<tr>
+											<td style="padding: 0px">Street :</td>
+											<td style="padding: 0px">{{@$address->Street}}</td>
+										</tr>
+										<tr>
+											<td style="padding: 0px">City :</td>
+											<td style="padding: 0px">{{@$address->City}}</td>
+										</tr>
+										<tr>
+											<td style="padding: 0px">State : </td>
+											<td style="padding: 0px">{{@$address->State}}</td>
+										</tr>
+										<tr>
+											<td style="padding: 0px">Zip : </td>
+											<td style="padding: 0px">{{@$address->Zip}}</td>
+										</tr>
+										<tr>
+											<td style="padding: 0px">Country : </td>
+											<td style="padding: 0px">{{@$address->country_name}}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Receiver E-mail</td>
-								<td style="padding: 5px;color: #2196f3"></td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->receiver_email}}</td>
 							</tr>
 							<tr>
 								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Rocketr Fee</td>
-								<td style="padding: 5px;color: #2196f3"></td>
+								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->site_fee}}</td>
 							</tr>
 							
 						</tbody>

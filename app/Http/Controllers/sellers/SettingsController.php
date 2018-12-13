@@ -9,7 +9,13 @@ use App\models\frontend\sellers\ProductGroups;
 use Auth;
 use Common;
 use App\models\frontend\User;
+use App\models\frontend\Currency;
+use App\models\frontend\sellers\PaymentSetting;
 use Image;
+use Hash;
+use Validator;
+use App\DataTables\frontend\sellers\LoginLogsDataTable;
+use Session;
 class SettingsController extends Controller
 {
     /**
@@ -79,17 +85,132 @@ class SettingsController extends Controller
         $opts['siteName']        = $username;
         $opts['pageTitle']       = url('/');
         $opts['user']            = User::where(['username' => $username])->first();
-        $cnt                     = ProductGroups::where(['seller_id' => $opts['user']->id])->count();
-        if($cnt>0){
-        $opts['productGroups']   = $productGroups = ProductGroups::where(['seller_id' => $opts['user']->id])->get();
-            for($i=0;$i<count($productGroups);$i++){
-                $groupProducts[$i]   = Product::whereIn('id',json_decode($productGroups[$i]->product_id))->select('*')->get()->toArray();
+       
+        if($opts['user']){
+            $cnt                     = ProductGroups::where(['seller_id' => $opts['user']->id])->count();
+            if($cnt>0){
+                $opts['productGroups']   = $productGroups = ProductGroups::where(['seller_id' => $opts['user']->id])->get();
+                for($i=0;$i<count($productGroups);$i++){
+                    $groupProducts[]   = Product::whereIn('id',json_decode($productGroups[$i]->product_id))->select('*')->get()->toArray();
+                }
+                $opts['groupProductAll'] = $groupProducts;
+                $opts['commonProducts']  = $this->commonProducts($groupProducts);
+                return view('frontend.sellers.pages.stores.store',$opts);
+            }else{
+                Common::one_time_message('danger',"You don't have any store products");
+                return back();
             }
-            $opts['groupProductAll'] = $groupProducts;
-            return view('frontend.sellers.pages.stores.store',$opts);
+
         }else{
+            Common::one_time_message('danger',"You don't have any store products");
             return back();
         }
         
+        
+    }
+
+    public function paymentSettings(Request $response){
+        $settings         = PaymentSetting::where(['account_id' => Auth::user()->id])->first();
+        if(!$_POST){
+            $data['siteName']       = 'Rocketr';
+            $data['pageTitle']      = 'Payment Settings';
+            $data['settings']       = $settings;
+            $data['paypal']         = PaymentSetting::where(['type'=>'paypal','account'=>'seller','account_id'=>Auth::user()->id])->pluck('value','name');
+            $data['oldcurrency']    = PaymentSetting::where(['type'=>'currency','account_id'=>Auth::user()->id])->first();
+            $data['currency']       = Currency::all();
+            return view('frontend.sellers.pages.settings.payment',$data);
+        }
+        else{
+                      
+            if($response->currency){
+                $match           = ['account_id' => Auth::user()->id ,'account'=>'seller','type'=>'currency'];
+                $paymentSettings = PaymentSetting::firstOrNew($match);
+                $paymentSettings->account_id  = Auth::user()->id;
+                $paymentSettings->account     = 'seller';
+                $paymentSettings->name        = 'currency';
+                $paymentSettings->value       = $response->currency_id;
+                $paymentSettings->type        = 'currency';
+                $paymentSettings->save();
+            }
+
+            if($response->paypal){
+                foreach ($response->method as $key => $payment) {
+                    foreach ($payment as $key => $value) {
+
+                       $match                         = ['account_id' => Auth::user()->id ,'account'=>'seller','type'=>'paypal','name'=>$key];               
+                       $paymentSettings               = PaymentSetting::firstOrNew($match);
+                       $paymentSettings->account_id   = Auth::user()->id;
+                       $paymentSettings->account      = 'seller';
+                       $paymentSettings->name         = $key;
+                       $paymentSettings->value        = $value;
+                       $paymentSettings->type         = 'paypal';
+
+                       $paymentSettings->save();
+                    }
+                }
+            }
+            Common::one_time_message('success','Your action has been successfully executed!');
+            return back();
+        }
+    }
+
+    public function securitySettings(Request $request,LoginLogsDataTable $datatable){
+
+
+        if(!$_POST){
+            $data['siteName']       = 'Rocketr';
+            $data['pageTitle']      = 'Security Settings';
+            return $datatable->render('frontend.sellers.pages.settings.security',$data);
+        }else{
+
+            $rules = array(
+                'current_password'  => 'required',
+                'new_password'      => 'required',
+                'confirm_password'  => 'required|same:new_password',
+                
+            );
+            $niceNames = array(
+               
+                'current_password'  => 'Password',
+                'new_password'      => 'New Password',
+                'confirm_password'  => 'Confirm password'
+            );
+
+            $validator = Validator::make($request->all(),$rules);
+            $validator->setAttributeNames($niceNames);
+
+            if($validator->fails()){
+                return back()->withErrors($validator)->withInput();
+            }else{
+                $users           = $users;
+                $credentails             = [];
+                $credentails['email']    = $users->email;
+                $credentails['password'] = $request->current_password;
+                if(Auth::attempt($credentails)){
+                    $users->password = Hash::make($request->new_password);
+                    $users->save();
+                    Common::one_time_message('success','Your action has been successfully executed!');
+                    return back();
+                }else{
+                    Common::one_time_message('danger','Incorrect Current Password.');
+                    return back();
+                }
+            }
+
+        }
+        
+    }
+    //Get  all group products
+    public function commonProducts($groupProducts){
+        $result           = [];
+        foreach ($groupProducts as $value) {
+            $result       = array_merge($result, $value);
+        }
+        $productIds       = array_column($result, 'id');
+        $uniqueProductIds = array_values(array_unique($productIds));
+        for($i=0;$i<count($uniqueProductIds);$i++){
+            $cProducts[$i] = Product::where('id',$uniqueProductIds[$i])->select('*')->get()->toArray();
+        }
+        return $cProducts;
     }
 }

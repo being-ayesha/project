@@ -133,15 +133,15 @@ var С3LinesAreas = function() {
                     r: 4
                 },
                 color: {
-                    pattern: ['#E53935', '#3949AB']
+                    pattern: ['#b4e0d6']
                 },
                 data: {
                     columns: [
-                        ['data1', 300, 350, 300, 0, 0, 0],
-                        ['data2', 130, 100, 140, 200, 150, 50]
+                        
+                        ['data2', 130, 100, 140, 200, 150, 50,5]
                     ],
                     types: {
-                        data1: 'area-spline',
+                       
                         data2: 'area-spline'
                     }
                 },

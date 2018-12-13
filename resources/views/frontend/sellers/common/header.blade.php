@@ -60,6 +60,7 @@
 	<script src="{{asset('public/frontend/global_assets/js/plugins/pickers/pickadate/picker.time.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/demo_pages/picker_date.js')}}"></script>
+	<script src="{{asset('public/frontend/global_assets/js/demo_pages/components_popups.js')}}"></script>
 
 	<!-- <script src="{{asset('public/frontend/global_assets/js/demo_pages/editor_ckeditor.js')}}"></script> -->
 
@@ -77,6 +78,8 @@
 	<script src="{{ asset('public/frontend/plugins/DataTables_latest/Responsive-2.2.2/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/frontend/plugins/jquerysteps/jquery.steps.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/frontend/plugins/jqueryvalidate/jquery.validate.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('public/frontend/global_assets/js/plugins/notifications/jgrowl.min.js')}}"></script>
+
 	<style type="text/css">
 		.producttype p:hover{
 			background: #26a69a;

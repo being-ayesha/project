@@ -27,7 +27,9 @@ class OrderDataTable extends DataTable
 
             ->addColumn('product_id', function ($order)
             {
-                return "<a href=".url($order->product->product_uuid).">".$order->product->product_title."</a>";
+                
+                
+                return "<a href=".url('buy/'.base64_encode(Auth::user()->username).'/'.$order->product->product_uuid).">".$order->product->product_title."</a>";
             })
 
             ->addColumn('buyer_email', function ($order)
@@ -110,7 +112,7 @@ class OrderDataTable extends DataTable
             ->addColumn(['data' => 'payment_method_id', 'name' => 'orders.payment_method_id', 'title' => 'Payment Method'])
             ->addColumn(['data' => 'payment_status', 'name' => 'orders.payment_status', 'title' => 'Status'])
             ->addColumn(['data' => 'order_date', 'name' => 'orders.order_date', 'title' => 'Date'])
-            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Options', 'orderable' => false, 'searchable' => false])
+            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Options', 'orderable' => false, 'searchable' => false,'width'=>'100px'])
             ->parameters([
             'dom' => 'lBfrtip',
             'buttons' => ['csv'],

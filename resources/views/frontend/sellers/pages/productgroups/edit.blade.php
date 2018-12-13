@@ -4,7 +4,7 @@
 		<div class="card">
 
 			<div class="card-body">
-				<form action="{{url('seller/edit-product-groups')}}/{{$ProductGroups->id}}" method="post">
+				<form action="{{url('seller/edit-product-groups')}}/{{$ProductGroups->id}}" method="post" id="productGroupForm">
 					<fieldset class="mb-3">
 						<p class="text-uppercase font-size-sm" style="font-weight: 700;color:#797979;font-size:14px">Update product group</p>
 						{{@csrf_field()}}
@@ -24,6 +24,7 @@
 							        	<option value="{{$products[$i]['id']}}" {{in_array($products[$i]['product_title'],$groupProducts)?'selected="selected"':''}}>{{$products[$i]['product_title']}}</option>
 							        @endfor
 							  </select>
+							  <div class="error_group_product_id"></div>
 							  @if($errors->has('product_id'))
 							   <div class="form-text text-danger">
 							   	  {{$errors->first('product_id')}}

@@ -14,6 +14,7 @@ use Auth;
 use DateTime;
 use App\DataTables\frontend\sellers\CouponsDataTable;
 use App\DataTables\frontend\sellers\LatestOrderUsingCouponDataTable;
+
 class CouponController extends Controller
 {
     /**
@@ -46,7 +47,7 @@ class CouponController extends Controller
             $rules=[
                  'product_id'        =>'required',
                  'payment_method_id' =>'required',
-                 'coupon_code'        =>'required',
+                 'coupon_code'       =>'required|unique:coupons,coupon_code',
                  'discount_strcture' =>'required',
                  'discount_amount'   =>'required',
                  'expaire_date'      =>'required',
@@ -68,7 +69,16 @@ class CouponController extends Controller
                 
                 return back()->withErrors($validator)->withInput();
             }else{    
-            
+                   
+                $end_date            =  new DateTime($request->expaire_date);
+                $today_date          = new DateTime(date('Y-m-d h:m:i'));
+                $checktodayInterval  = $end_date->diff($today_date);
+
+                if( $checktodayInterval->days<=0){
+                    Common::one_time_message('danger','The coupon was set to expire before today');
+                    return back();
+                }
+
                 $cupon                     = new Coupon();
                 $cupon->seller_id          = Auth::user()->id;
                 $cupon->product_ids        = json_encode($request->product_id);
@@ -119,6 +129,14 @@ class CouponController extends Controller
         $option['groupPayment']     = explode(',',$coupon->getCouponPayments($coupon->id));
         $option['paymentMethod']    = PaymentMethod::get()->toArray();
         $option['number_of_coupon_uses'] = Order::where(['seller_id'=>Auth::user()->id,'coupon_code'=>$id])->select('coupon_code')->count();
+        
+        $end_date               =  new DateTime($coupon->expiry_date);
+        $today_date             = new DateTime(date('Y-m-d h:m:i'));
+        $checktodayInterval     = $end_date->diff($today_date);
+        $option['interval_day'] = $checktodayInterval->days;
+
+       // dd($option['interval_day']);
+       
         return $dataTable->with('coupon_id',$id)->render('frontend.sellers.pages.coupons.edit',$option);
         }else{
 

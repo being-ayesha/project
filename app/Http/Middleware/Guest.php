@@ -18,6 +18,10 @@ class Guest
                 if (!Auth::check()) {
                     return \Redirect::guest('merchants/login');
                 }
+            }else if($prefix=='affiliates'){
+                if (!Auth::check()) {
+                    return \Redirect::guest('affiliates/login');
+                }
             }else{ 
                 if (!Auth::check()) {
                     return \Redirect::guest('login');

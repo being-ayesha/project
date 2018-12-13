@@ -24,8 +24,9 @@ class OrderController extends Controller
 
     	$option['siteName']  = 'Rocketr';
         $option['pageTitle'] = 'Order Details';
-    	$option['order']=Order::where(['seller_id'=>Auth::user()->id,'order_uuid'=>$id])->first();
-    	return view('frontend.sellers.pages.orders.view',$option);
+    	$option['order']     = $order = Order::with('paymentDetails')->where(['seller_id'=>Auth::user()->id,'order_uuid'=>$id])->first();
+    	$option['address']     = json_decode(@$order->paymentDetails->sender_address);
+        return view('frontend.sellers.pages.orders.view',$option);
     }
 
      public function deleteOrder(Request $request){

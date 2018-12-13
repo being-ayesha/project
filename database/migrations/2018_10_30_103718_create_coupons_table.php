@@ -26,7 +26,7 @@ class CreateCouponsTable extends Migration
             $table->dateTime('expiry_date');
             $table->integer('stock')->comment('Uses Left');
             $table->integer('number_of_uses');
-            $table->tinyInteger('deleted_at');
+            $table->tinyInteger('deleted_at')->nullable();
             $table->timestamps();
         });
     }

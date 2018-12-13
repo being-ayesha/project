@@ -2,12 +2,11 @@
 @section('content')
 	<!-- Form inputs -->
 		<div class="card">
-
 			<div class="card-body">
 				<form action="{{url('seller/add-coupon')}}" method="post" id="productCuponForm">
 					<fieldset class="mb-3">
 						<p class="text-uppercase font-size-sm" style="font-weight: 700;color:#797979;font-size:14px">Add Coupon</p>
-						{{@csrf_field()}}
+						@csrf	
 						<div class="form-group">
 						      <label for="product_type" style="font-weight: 700;color:#797979;font-size:14px">Product <span class="text-danger">*</span></label>
 						      <select multiple="multiple" class="form-control select" name="product_id[]" id="coupon_product_id" data-placeholder="Please select products..">
@@ -98,10 +97,3 @@
 		</div>
 	<!-- /form inputs -->
 @endsection
-<!-- @push('scripts')
-
-<script type="text/javascript">
-
-</script>
-
-@endpush -->

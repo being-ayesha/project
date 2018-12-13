@@ -47,7 +47,7 @@ class CouponsDataTable extends DataTable
                 }
 
                 if($checktodayInterval->days<=0){
-                    return "<p class='badge bg-success'>Expired</p>";
+                    return "<p class='badge badge-dark'>Expired</p>";
                 }
                
                 if($date_interval->days >= 7){

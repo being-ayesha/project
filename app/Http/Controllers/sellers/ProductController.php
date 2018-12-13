@@ -89,7 +89,7 @@ class ProductController extends Controller
             $product->seller_id                      = Auth::user()->id;
             $product->product_uuid                   = Common::unique_code();
             $product->product_title                  = $request->title;
-            $product->product_description            = strip_tags($request->description);
+            $product->product_description            = $request->description;
             //Product photo upload codes starts here
             if($request->has('photo')){
                 $filePhoto                           = $request->file('photo');
@@ -120,6 +120,7 @@ class ProductController extends Controller
                     $product->downloadable_file          = $fileName;
                 }
             }else if($request->product_type=='code'){
+                //dd($request->all());
                 $product->product_type_id            = $productType->id;
                 $product->added_codes                = json_encode($request->code_item);
                 $product->stock                      = count($request->code_item);
@@ -185,7 +186,7 @@ class ProductController extends Controller
             }else{
             $product->seller_id                      = Auth::user()->id;
             $product->product_title                  = $request->title;
-            $product->product_description            = strip_tags($request->description);
+            $product->product_description            = $request->description;
             //Product photo upload codes starts here
             if($request->has('photo')){
                 $filePhoto                               = $request->file('photo');

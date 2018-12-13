@@ -14,7 +14,7 @@
 			<div class="content d-flex justify-content-center align-items-center">
 
 				<!-- Registration form -->
-				<form class="login-form" action="{{url('register')}}" method="post">
+				<form class="login-form" action="{{url('register')}}" method="post" id="registrarionForm">
 					<div class="card mb-0">
 						<div class="card-body">
 							<div class="text-center mb-3">
@@ -24,10 +24,11 @@
 							</div>
 							{{@csrf_field()}}
 							<div class="form-group form-group-feedback form-group-feedback-left">
-								<input type="text" class="form-control" value="{{old('username')}}" name="username" placeholder="Username">
+								<input type="text" class="form-control" value="{{old('username')}}" name="username" placeholder="Username" id="username">
 								<div class="form-control-feedback">
 									<i class="icon-user-check text-muted"></i>
 								</div>
+								<div class="error" id="err_special_character"></div>
 								@if($errors->has('username'))
 									<span class="form-text text-danger">
 										{{$errors->first('username')}}
@@ -47,7 +48,7 @@
 							</div>
 
 							<div class="form-group form-group-feedback form-group-feedback-left">
-								<input type="password" name="password" class="form-control" placeholder="Password">
+								<input type="password" name="password" class="form-control" placeholder="Password" id="password">
 								<div class="form-control-feedback">
 									<i class="icon-user-lock text-muted"></i>
 								</div>

@@ -1,3 +1,3 @@
-@extends('frontend.merchants.template')
+@extends('frontend.affiliates.template')
 @section('content')
 @endsection
