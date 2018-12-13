@@ -7,6 +7,19 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## Project Instruction
+
+- Step 1: Download Project from [Click Download]( https://code.myworkforce.com/TechVillage/rocketr-clone-project.git).
+- Step 2: Got to project file location and run command : composer update. 
+- Step 3: Creta a databse in your phpMyadmin
+- Step 4: Rename .env.example to .env and change details from .env file.
+	DB_DATABASE=your_database_name
+	DB_USERNAME=your_database_username
+	DB_PASSWORD=your_database_password
+- Step 5: Run Command : php artisan migrate.
+- Step 6: Run Command : php artisan db:seed.
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
@@ -63,15 +76,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-## Project Instruction
-
-Step 1: Download Project from [Click Download]( https://code.myworkforce.com/TechVillage/rocketr-clone-project.git)
-Step 2: Got to project file location and run command : composer update  
-Step 3: Creta a databse in your phpMyadmin
-Step 4: Rename .env.example to .env and change details from .env file 
-	DB_DATABASE=your_database_name
-	DB_USERNAME=your_database_username
-	DB_PASSWORD=your_database_password
-Step 5: Run Command : php artisan migrate
-Step 6: Run Command : php artisan db:seed
