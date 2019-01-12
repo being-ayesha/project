@@ -18,14 +18,14 @@ class AnalyticsController extends Controller
     {
     	
     	if(!$_POST){
-    		$data['siteName']  = 'Rocketr';
+    		$data['siteName']  = getenv('APP_NAME');
     		$data['pageTitle'] = 'Analytic';
     		$data['products']  = Product::where(['seller_id' => Auth::user()->id])->get();
     		return view('frontend.sellers.pages.analytic.analytic',$data);
 
     	}else{
 
-    		$data['siteName']  = 'Rocketr';
+    		$data['siteName']  = getenv('APP_NAME');
     		$data['pageTitle'] = 'Analytic';
     		$data['products']     = Product::where(['seller_id' => Auth::user()->id])->get();
     		$data['groupProduct'] = $request->analytic_product_id;

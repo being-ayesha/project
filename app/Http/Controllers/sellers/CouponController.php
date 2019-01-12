@@ -25,7 +25,7 @@ class CouponController extends Controller
      */
     public function index(CouponsDataTable $dataTable)
     {
-        $opts['siteName']  = 'Rocketr';
+        $opts['siteName']  = getenv('APP_NAME');
         $opts['pageTitle'] = 'Coupon Litst';
         return $dataTable->render('frontend.sellers.pages.coupons.list',$opts);
     }
@@ -37,7 +37,7 @@ class CouponController extends Controller
         if(!$_POST){
             $opts['products']       = Product::where(['seller_id' => Auth::user()->id])->get();
             $opts['paymentMethod']  = PaymentMethod::all();
-            $opts['siteName']       = 'Rocketr';
+            $opts['siteName']       = getenv('APP_NAME');
             $opts['pageTitle']      = 'Add Coupon';
             return view('frontend.sellers.pages.coupons.add',$opts);
         }else{
@@ -122,7 +122,7 @@ class CouponController extends Controller
         if(!$_POST){
 
         $option['coupon']           = $coupon;
-        $option['siteName']         = 'Rocketr';
+        $option['siteName']         = getenv('APP_NAME');
         $option['pageTitle']        = 'Update Coupon';
         $option['groupCoupons']     = explode(',',$coupon->getCouponProducts($coupon->id));
         $option['products']         = Product::where(['seller_id' => Auth::user()->id])->get()->toArray();

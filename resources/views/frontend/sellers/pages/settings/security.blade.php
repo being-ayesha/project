@@ -1,17 +1,34 @@
-@extends('frontend.sellers.template')
+@php
+$layout='';
+if(Request::segment(1)=='seller'){
+$layout="frontend.sellers.template";
+}else{	
+$layout="frontend.merchants.template";
+}
+@endphp
+@extends($layout)
 @section('content')
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-6" id="div2fa">
 		<div class="card">
 			<div class="card-header">
 				<h6 class="card-title" style="font-size: 15px;font-weight:600;text-transform:uppercase;color: #98a6ad">Two Factor Authentication</h6>
 			</div>
 			<div class="card-body">
 					<div class="form-group row">
-						<p class="card-title" style="margin-left: 5px">Login Method: Password</p><br>
-						<button type="button" class="btn bg-teal-400 btn-labeled btn-lg btn-block" style="font-size: 18px;font-weight:400">Click here to enable Authy Two Factor Authentication</button>
-						<button type="button" class="btn bg-teal-400 btn-labeled btn-lg btn-block" style="font-size: 18px;font-weight:400">Click here to enable Email Two Factor Authentication</button>
+						<p class="card-title" style="margin-left: 5px">Login Method: Password {{@$userdetails->email_verification==1?'and Two Factor (Email)':''}} {{@$userdetails->two_step_verification==1?'and Two Factor (Authy)':''}}</p><br>	
 						
+						@if(@$userdetails->two_step_verification==1)
+						<button type="btn" class="btn btn-danger btn-lg btn-block authenticate" style="font-size: 18px;font-weight:400" id="no2fa">Disable Two Factor Authentication</button>
+						@else
+						<a href="{{url(Request::segment(1).'/settings/enable-2fa')}}" class="btn bg-teal-400 btn-labeled btn-lg btn-block" style="font-size: 18px;font-weight:400" id="2fa">Click here to enable Authy Two Factor Authentication</a>
+						@endif
+
+						@if(@$userdetails->email_verification==1)
+						<button type="btn" class="btn btn-danger btn-lg btn-block authenticate" style="font-size: 18px;font-weight:400" id="noemail">Disable Email Two Factor Authentication</button>
+						@else
+						<button type="btn" class="btn bg-teal-400 btn-labeled btn-lg btn-block authenticate" style="font-size: 18px;font-weight:400" id="email">Click here to enable Email Two Factor Authentication</button>
+						@endif	
 			     	</div>
 			</div>
 		</div>
@@ -23,7 +40,11 @@
 				<h6 class="card-title" style="font-size: 15px;font-weight:600;text-transform:uppercase;color: #98a6ad">Change Password</h6>
 			</div>
 			<div class="card-body">
+				@if(Request::segment(1)=='seller')
 				<form action="{{url('seller/settings/security')}}" method="post" id="changePasswordForm">
+				@else
+				<form action="{{url('merchants/settings/security')}}" method="post" id="changePasswordForm">
+				@endif
 					@csrf
 					<div class="form-group">
 						<label> Current Password:</label>
@@ -61,5 +82,29 @@
 @endsection
 @push('scripts')
 {!! $dataTable->scripts() !!}
+<script type="text/javascript">
 
+	$(".authenticate").click(function(){
+
+		var enable  = $(this).attr('id');
+		var siteUrl = 'seller/settings/two-factor';
+		var url     = SITE_URL+'/'+siteUrl;
+		$.ajax({
+			url:url,
+			method:'get',
+			dataType:'json',
+			async:false,
+			data:{
+				'enable':enable,
+			},
+			success:function(response){
+				 if(response.status==1){
+						location.reload();
+				 }
+			}
+		})
+	});
+
+	
+</script>
 @endpush

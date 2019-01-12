@@ -16,8 +16,9 @@
 					  	  <div class="card-header bg-info dashboardHeader">Login to rocket.Where do you want to go next?</div>
 						  <div class="card-body" style="background: #f1f1f1">								
 							  	<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">  
-									  <a class="nav-link text-center login linkColor" id="v-pills-home-tab" data-toggle="pill" href="{{url('seller/dashboard')}}" role="tab" aria-controls="v-pills-home" aria-selected="true">Login to Merchant</a>
-									  <a class="nav-link text-center login linkColor" id="v-pills-profile-tab" data-toggle="pill" href="{{url('seller/dashboard')}}" role="tab" aria-controls="v-pills-profile" aria-selected="false">Login to Seller</a>								</div>
+									  <a class="nav-link text-center login linkColor" id="v-pills-home-tab" href="{{url('merchants/dashboard')}}" role="tab" aria-controls="v-pills-home">Login to Merchant</a>
+									  <a class="nav-link text-center linkColor" id="v-pills-profile-tab" href="{{url('seller/dashboard')}}" role="tab" aria-controls="v-pills-home">Login to Seller</a>								
+								</div>
 						  </div> 
 					</div>
 			</div>

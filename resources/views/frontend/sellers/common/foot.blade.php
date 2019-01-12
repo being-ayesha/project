@@ -8,7 +8,7 @@
 
 				<div class="navbar-collapse collapse" id="navbar-footer">
 					<span class="navbar-text">
-						&copy; 2015 - 2018. <a href="{{url('/')}}" target="_blank">Rocketr</a>
+						&copy; 2015 - 2018. <a href="{{url('/')}}" target="_blank">{{$siteName}}</a>
 					</span>
 
 					<!-- <ul class="navbar-nav ml-lg-auto">

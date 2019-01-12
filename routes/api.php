@@ -16,3 +16,20 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Routes For Api 
+
+Route::group(['namespace' => 'Api','prefix'=>'orders'],function(){
+
+		Route::get('list/{orderId?}','OrderController@listOrder');
+		Route::post('create','OrderController@createOrder');
+		
+
+});
+
+
+Route::group(['namespace' => 'Api','prefix'=>'invoices'],function(){
+
+		Route::get('list/{invoiceId?}','InvoiceController@listInvoice');
+		Route::post('create','InvoiceController@createInvoice');		
+});

@@ -14,7 +14,7 @@
 			<div class="content d-flex justify-content-center align-items-center">
 
 				<!-- Login form -->
-				<form class="login-form" action="{{url('affiliates/login')}}" method="post">
+				<form class="login-form" action="{{url('affiliates/login')}}" method="post" id="loginForm">
 					<div class="card mb-0">
 						<div class="card-body">
 							@if(Session::has('message'))

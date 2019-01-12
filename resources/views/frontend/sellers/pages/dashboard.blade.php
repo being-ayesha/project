@@ -1,5 +1,10 @@
 @extends('frontend.sellers.template')
 @section('content')
+<!-- Begin MySiteAuditor -->
+<!-- <script src="//cdn.mysiteauditor.com/audit-tool.js" type="text/javascript"></script>
+		
+<div id="seogroup-embed"  data-apikey="a66a7a51b3298619cb946aaf29fe0b4314216369" data-language="english" data-type="slim"></div> -->
+<!-- End MySiteAuditor -->
 <div class="row">
 	<div class="col-lg-4">
 		<div class="card" align="center">

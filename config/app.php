@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Creationshop'),
 
     /*
     |--------------------------------------------------------------------------
@@ -104,7 +104,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY','base64:O+oXctBsmnzcGbKqc6YMdLcH8mDoh+lDGX08PnY01DY='),
+    'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
 

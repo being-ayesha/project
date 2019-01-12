@@ -9,6 +9,7 @@ use App\models\frontend\sellers\ProductGroups;
 use Auth;
 use Common;
 use App\models\frontend\User;
+use App\models\frontend\UserDetail;
 use App\models\frontend\Currency;
 use App\models\frontend\sellers\PaymentSetting;
 use Image;
@@ -16,6 +17,7 @@ use Hash;
 use Validator;
 use App\DataTables\frontend\sellers\LoginLogsDataTable;
 use Session;
+use Google2FA;
 class SettingsController extends Controller
 {
     /**
@@ -29,7 +31,7 @@ class SettingsController extends Controller
         $settings              = AccountSetting::where(['seller_id' => Auth::user()->id])->first();
         if(!$_POST){
             $opts['settings']  = $settings;
-            $opts['siteName']  = 'Rocketr';
+            $opts['siteName']  = getenv('APP_NAME');
             $opts['pageTitle'] = 'Account Settings';
             return view('frontend.sellers.pages.settings.account',$opts);
         }else{
@@ -112,7 +114,7 @@ class SettingsController extends Controller
     public function paymentSettings(Request $response){
         $settings         = PaymentSetting::where(['account_id' => Auth::user()->id])->first();
         if(!$_POST){
-            $data['siteName']       = 'Rocketr';
+            $data['siteName']       = getenv('APP_NAME');
             $data['pageTitle']      = 'Payment Settings';
             $data['settings']       = $settings;
             $data['paypal']         = PaymentSetting::where(['type'=>'paypal','account'=>'seller','account_id'=>Auth::user()->id])->pluck('value','name');
@@ -156,10 +158,11 @@ class SettingsController extends Controller
 
     public function securitySettings(Request $request,LoginLogsDataTable $datatable){
 
-
         if(!$_POST){
-            $data['siteName']       = 'Rocketr';
+            $data['siteName']       = getenv('APP_NAME');
             $data['pageTitle']      = 'Security Settings';
+            $data['userdetails']    = $userdetails =  UserDetail::where(['user_id'=>Auth::user()->id])->first();
+
             return $datatable->render('frontend.sellers.pages.settings.security',$data);
         }else{
 
@@ -182,7 +185,7 @@ class SettingsController extends Controller
             if($validator->fails()){
                 return back()->withErrors($validator)->withInput();
             }else{
-                $users           = $users;
+                $users                   = Auth::user();
                 $credentails             = [];
                 $credentails['email']    = $users->email;
                 $credentails['password'] = $request->current_password;
@@ -212,5 +215,69 @@ class SettingsController extends Controller
             $cProducts[$i] = Product::where('id',$uniqueProductIds[$i])->select('*')->get()->toArray();
         }
         return $cProducts;
+    }
+
+
+    public function twoFactorSettings(Request $request){
+        $userdetails = UserDetail::where(['user_id'=>Auth::user()->id])->first();
+        if($request->enable=="email"){
+            $userdetails->email_verification = 1;
+        }
+        if($request->enable=="noemail"){
+            $userdetails->email_verification = 0;
+        }
+        if($request->enable=="2fa"){
+            $userdetails->two_step_verification = 1;
+        }
+        if($request->enable=="no2fa"){
+            $user = Auth::user();
+            $user->google2fa_secret='';
+            $user->save();
+            $userdetails->two_step_verification = 0;
+        }
+        $userdetails->save();
+        return response()->json(['status'=>1]);
+    }
+
+    public function google2faEnable()
+    {
+        $data['siteName']        = getenv('APP_NAME');
+        $data['pageTitle']       = '2FA';
+
+        $user = Auth::user();
+        $google2fa = app('pragmarx.google2fa');
+        $user->google2fa_secret   = $google2fa->generateSecretKey();
+        $user->save();
+
+        $data['QR_Image'] = $google2fa->getQRCodeInline(
+            config('app.name'),
+            $user->email,
+            $user->google2fa_secret
+        );
+
+        $data['secret']=$user->google2fa_secret;
+
+     return view('frontend.sellers.pages.settings.twofa',$data);
+    }
+
+
+    public function enable2fa(Request $request){
+
+       $user = Auth::user();
+        $userdetails = UserDetail::where(['user_id'=>Auth::user()->id])->first();
+        $google2fa = app('pragmarx.google2fa');
+        $secret = $request->verify_code;
+        
+        $valid = $google2fa->verifyKey($user->google2fa_secret, $secret);
+      
+        if($valid){
+            $userdetails->two_step_verification = 1;
+            $userdetails->save();
+            Common::one_time_message('success','Your action has been successfully executed!');
+            return redirect('seller/settings/security');
+        }else{
+            Common::one_time_message('danger','Your action Not successfully executed!');
+            return redirect('seller/settings/security'); 
+        }
     }
 }

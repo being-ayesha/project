@@ -15,6 +15,7 @@
 					<div class="form-group row">
 						<div class="col-lg-4">
 							<select class="form-control" name="currency_id">
+								
 								@foreach($currency as $currency)
 									<option value="{{$currency->id}}" {{@$oldcurrency->value==$currency->id?'selected="selected"':''}}>{!!$currency->symbol!!} {{$currency->name}}</option>
 								@endforeach

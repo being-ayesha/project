@@ -18,7 +18,7 @@ class PaymentsController extends Controller
 
     //Get individual product details and order create
     public function getIndividualProductDetails(Request $request , $username, $productUuid , $affiliates){
-    	$opts['siteName']  = 'Rocketr';
+    	$opts['siteName']  = getenv('APP_NAME');
     	$opts['pageTitle'] = 'Single Product';
     	$opts['user']      = $user       = User::where(['username' => base64_decode($username)])->first();
     	$opts['affiliates']= $affiliates = User::where(['username' => base64_decode($affiliates)])->first();

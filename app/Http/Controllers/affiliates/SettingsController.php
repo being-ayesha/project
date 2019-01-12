@@ -12,7 +12,7 @@ class SettingsController extends Controller
     public function index(Request $request)
     {
     	if(!$_POST){
-    		$data['siteName']  = 'Rocketr';
+    		$data['siteName']  = getenv('APP_NAME');
     		$data['pageTitle'] = 'Affiliates Settings';
             $data['paypal']         = PaymentSetting::where(['type'=>'paypal','account'=>'affiliate','account_id'=>Auth::user()->id])->pluck('value','name');
     		return view('frontend.affiliates.pages.settings.payment',$data);

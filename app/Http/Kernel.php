@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'guest' => \App\Http\Middleware\Guest::class,
+        '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
 
     ];
 }

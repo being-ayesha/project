@@ -17,7 +17,7 @@ Route::get('email', 'CronController@newMarketingEmail');
 
 Route::group(['namespace' => 'frontend','middleware' => ['noAuth:users']],function(){
 	Route::get('', 'LoginController@index');
-	Route::get('login', 'LoginController@index');
+	Route::get('login/{token?}', 'LoginController@index');
 	Route::post('login','LoginController@authenticate');
 	Route::match(['GET','POST'],'register','RegisterController@index');
 });
@@ -26,32 +26,24 @@ Route::group(['namespace' => 'frontend','middleware' => ['noAuth:users']],functi
 
 //Routes for merchants and sellers without prefix merchants/sellers when logged in starts here
 
-Route::group(['namespace'=>'frontend','middleware' => ['guest:users']],function(){	
+Route::group(['namespace'=>'frontend','middleware' => ['guest:users','2fa']],function(){	
 	Route::get('dashboard','LoginController@dashboard');
-});
-
-//Routes for merchants and sellers without prefix merchans/sellers when logged in ends here
-
-
-//Route::get('/home', 'HomeController@index')->name('home');
-
-Route::group(['prefix'=>'merchants','namespace' => 'merchants'],function(){
-	Route::get('/','DashboardController@index');
-
 });
 
 //Routes for seller with prefix seller when not logged in starts here
 Route::group(['prefix'=>'seller','namespace' => 'sellers','middleware' => ['noAuth:users']],function(){
 	Route::get('','DashboardController@login');
-	Route::match(['GET','POST'],'login','DashboardController@login');
+	Route::match(['GET','POST'],'login/{token?}','DashboardController@login');
 	
 });
 
 //Routes for seller with prefix seller when not logged in ends here
-
+Route::post('2fa', function () {
+    return redirect(URL()->previous());
+})->name('2fa')->middleware('2fa');
 //Routes for seller with prefix seller when logged in starts here
 
-Route::group(['prefix' => 'seller','namespace' => 'sellers','middleware'=>['guest:users']],function(){
+Route::group(['prefix' => 'seller','namespace' => 'sellers','middleware'=>['guest:users','2fa']],function(){
 	//Dashboard routes after login
 	Route::get('','DashboardController@index');
 	Route::get('dashboard','DashboardController@index');
@@ -101,6 +93,9 @@ Route::group(['prefix' => 'seller','namespace' => 'sellers','middleware'=>['gues
 	Route::match(['GET','POST'],'settings/account','SettingsController@accountSettings');
 	Route::match(['GET','POST'],'settings/payment','SettingsController@paymentSettings');
 	Route::match(['GET','POST'],'settings/security','SettingsController@securitySettings');
+	Route::match(['GET','POST'],'settings/enable2fa','SettingsController@enable2fa');
+	Route::get('settings/enable-2fa','SettingsController@google2faEnable');
+	Route::get('settings/two-factor','SettingsController@twoFactorSettings');
 
 });
 //Routes for sellers page individual store
@@ -156,3 +151,47 @@ Route::group(['namespace' => 'affiliates'],function(){
 	Route::match(['GET','POST'],'buy/{username}/{product_uuid}/{affiliates}','PaymentsController@getIndividualProductDetails');
 	
 });
+
+
+//Routes for merchants with prefix merchants when not logged in starts here
+Route::group(['prefix'=>'merchants','namespace' => 'merchants','middleware' => ['noAuth:users']],function(){
+	
+	Route::get('','DashboardController@login');
+	Route::match(['GET','POST'],'login/{token?}','DashboardController@login');
+});
+
+//Routes for affiliates with prefix merchants when logged in starts here
+Route::group(['prefix' => 'merchants','namespace' => 'merchants','middleware'=>['guest:users','2fa']],function(){
+	
+	Route::get('','DashboardController@index');
+	Route::get('dashboard','DashboardController@index');
+    Route::post('logout','DashboardController@logout');
+
+	//Accept Payments route
+	Route::get('accept-payments','AcceptPaymentsController@acceptPayments');
+	Route::match(['GET','POST'],'payment-buttons','AcceptPaymentsController@paymentButtons');
+	Route::match(['GET','POST'],'api','AcceptPaymentsController@api');
+	Route::post('delete-api','AcceptPaymentsController@apiDelete');
+
+	 //Payments route
+	Route::get('payments','PaymentsController@index');
+	Route::get('payments-details/{id}','PaymentsController@paymentDetails');
+
+    //Settings route
+	Route::match(['GET','POST'],'settings/account','SettingsController@accountSettings');
+	Route::match(['GET','POST'],'settings/profile','SettingsController@profileSettings');
+	Route::match(['GET','POST'],'settings/payment','SettingsController@paymentSettings');
+	Route::match(['GET','POST'],'settings/security','SettingsController@securitySettings');
+	Route::get('settings/enable-2fa','SettingsController@google2faEnable');
+	Route::match(['GET','POST'],'settings/enable2fa','SettingsController@enable2fa');
+
+});
+
+//Routes for invoice product page from merchants
+Route::group(['namespace' => 'merchants','prefix'=>'merchants'],function(){
+	Route::match(['GET','POST'],'invoice/{username}/{invoiceId}','AcceptPaymentsController@invoice');
+	Route::post('buy-button','AcceptPaymentsController@buyButton');
+	Route::post('pay-now','PaymentsController@payNow');
+	Route::get('payments/success', 'PaymentsController@success');
+});
+

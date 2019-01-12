@@ -18,12 +18,12 @@ class FeedbackDataTable extends DataTable
             ->eloquent($this->query())
              ->addColumn('product_id', function ($feedback)
             {
-                return $feedback->orderDetails->product->product_title;
+                return @$feedback->orderDetails->product->product_title;
             })
 
             ->addColumn('order_id', function ($feedback)
             {
-                return $feedback->orderDetails->order_uuid;
+                return @$feedback->orderDetails->order_uuid;
             })
 
             ->addColumn('action', function ($feedback)

@@ -21,7 +21,7 @@ class RegisterController extends Controller
     public function index(Request $request)
     {
        if(!$_POST){
-            $opts['siteName']  = 'Rocketr';
+            $opts['siteName']  = getenv('APP_NAME');
             $opts['pageTitle'] = 'Register a new member';
             return view('frontend.register',$opts);
         }else{

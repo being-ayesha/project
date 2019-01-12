@@ -17,7 +17,7 @@ class ProductReviewController extends Controller
 
 	// Get Feedback list
 	public function index(FeedbackDataTable $dataTable){
-		$opts['siteName']  = 'Rocketr';
+		$opts['siteName']  = getenv('APP_NAME');
         $opts['pageTitle'] = 'Feedback';
         return $dataTable->render('frontend.sellers.pages.review.feedback',$opts);
 	}

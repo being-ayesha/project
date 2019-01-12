@@ -1,10 +1,11 @@
 <div class="navbar navbar-expand-md navbar-dark">
 	<div class="navbar-brand">
-		<a href="index.html" class="d-inline-block">
+
+		<a href="{{url('seller')}}" >
 			<img src="{{asset('public/frontend/global_assets/images/logo_light.png')}}" alt="">
+			{{$siteName}}
 		</a>
 	</div>
-
 	<div class="d-md-none">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
 			<i class="icon-tree5"></i>
@@ -15,7 +16,7 @@
 	</div>
 
 	<div class="collapse navbar-collapse" id="navbar-mobile">
-		<ul class="navbar-nav">
+		<!-- <ul class="navbar-nav">
 			<li class="nav-item">
 				<a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
 					<i class="icon-paragraph-justify3"></i>
@@ -103,14 +104,17 @@
 					</div>
 				</div>
 			</li>
-		</ul>
+		</ul> -->
 
-		<span class="navbar-text ml-md-3 mr-md-auto">
+		<!-- <span class="navbar-text ml-md-3 mr-md-auto">
 			<span class="badge bg-success">Online</span>
+		</span> -->
+		<span class="navbar-text ml-md-3 mr-md-auto">
+			<span class="badge">&nbsp;</span>
 		</span>
 
 		<ul class="navbar-nav">
-			<li class="nav-item dropdown">
+			<!-- <li class="nav-item dropdown">
 				<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
 					<i class="icon-people"></i>
 					<span class="d-md-none ml-2">Users</span>
@@ -291,21 +295,25 @@
 						<a href="#" class="bg-light text-grey w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
 					</div>
 				</div>
-			</li>
+			</li> -->
 
 			<li class="nav-item dropdown dropdown-user">
 				<a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
-					<img src="{{asset('public/frontend/global_assets/images/placeholders/placeholder.jpg')}}" class="rounded-circle" alt="">
-					<span>Victoria</span>
+					@if(Auth::user()->profile_photo)
+					<img style="width:38px;height: 38px" src="{{url('public/uploads/sellers/profilephoto')}}/{{Auth::user()->profile_photo}}" class="rounded-circle profile-image" alt="profile-image" name="image">
+					@else
+					<img style="width:38px;height: 38px" src="{{url('public/uploads/sellers/profilephoto/nouser.jpg')}}" class="rounded-circle profile-image" alt="profile-image" name="image" width="38" height="38">
+					@endif
+					<span>{{Auth::user()->email}}</span>
 				</a>
 
 				<div class="dropdown-menu dropdown-menu-right">
-					<a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-					<a href="#" class="dropdown-item"><i class="icon-coins"></i> My balance</a>
-					<a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>
-					<div class="dropdown-divider"></div>
-					<a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
-					<a href="#" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+					<!-- <a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
+					<a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a> -->
+					<a class="dropdown-item" href="{{ url('merchants/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="icon-switch2"></i> {{ __('Logout') }}</a>
+                    <form id="logout-form" action="{{ url('merchants/logout') }}" method="POST" style="display: none;">
+                         @csrf
+                    </form>
 				</div>
 			</li>
 		</ul>

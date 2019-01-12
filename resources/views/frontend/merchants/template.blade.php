@@ -11,7 +11,7 @@
 		<div class="content-wrapper">
 			<!-- Page header -->
 			<div class="page-header page-header-light">
-				@include('frontend.merchants.common.breadcrumbheader')
+				<!-- @include('frontend.merchants.common.breadcrumbheader') -->
 				@include('frontend.merchants.common.breadcrumb')
 			</div>
 			<!-- /page header -->
@@ -29,4 +29,5 @@
 		<!-- /main content -->
 	</div>
 	<!-- /page content -->
+@stack('scripts')
 @include('frontend.merchants.common.footer')

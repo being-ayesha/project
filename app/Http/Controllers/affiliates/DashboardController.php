@@ -9,14 +9,16 @@ use App\models\frontend\sellers\Order;
 use Validator;
 use Auth;
 use Common;
+use App\models\frontend\Currency;
 class DashboardController extends Controller
 {
 
         public function index()
         {
-           $data['siteName']  = 'Rocketr';
+           $data['siteName']  = getenv('APP_NAME');
            $data['pageTitle'] = 'Affiliates Home';
            $data['order']     = $order = Order::find(1);
+           $data['currency']    = Currency::currencySymbol();
            
            $total_commission = $daily_commission = $weekly_commission = $number_of_sale = $daily_sale= $weekly_sale = 0;
 
@@ -59,7 +61,7 @@ class DashboardController extends Controller
 
     	if(!$_POST){
     		
-    		$data['siteName']  = 'Rocketr';
+    		$data['siteName']  = getenv('APP_NAME');
         	$data['pageTitle'] = 'Affiliates Login';
     		return view("frontend.affiliates.pages.login",$data);
     	}

@@ -19,7 +19,7 @@ class ProductGroupsController extends Controller
     {
     	if(!$_POST){
     		$opts['products']  = Product::where(['seller_id' => Auth::user()->id])->get();
-    		$opts['siteName']  = 'Rocketr';
+    		$opts['siteName']  = getenv('APP_NAME');
     		$opts['pageTitle'] = 'Product groups list';
             return $dataTable->render('frontend.sellers.pages.productgroups.add',$opts);
     	}else{
@@ -60,7 +60,7 @@ class ProductGroupsController extends Controller
             $opts['products']       = Product::where(['seller_id' => Auth::user()->id])->get()->toArray();
             $opts['ProductGroups']  = $ProductGroups;
             $opts['groupProducts']  = $groupProducts;
-            $opts['siteName']       = 'Rocketr';
+            $opts['siteName']       = getenv('APP_NAME');
             $opts['pageTitle']      = 'Product groups list';
             return view('frontend.sellers.pages.productgroups.edit',$opts);
         }else{

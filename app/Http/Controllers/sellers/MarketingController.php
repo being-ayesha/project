@@ -14,7 +14,7 @@ class MarketingController extends Controller
 
 	public function index(PreviousMarketingEmailDataTable $dataTable){
 
-		$opts['siteName']  = 'Rocketr';
+		$opts['siteName']  = getenv('APP_NAME');
     	$opts['pageTitle'] = 'Sent Marketing';
     	return $dataTable->render('frontend.sellers.pages.marketing.previous',$opts);
     }
@@ -23,7 +23,7 @@ class MarketingController extends Controller
 
     public function newMarketing(Request $request){
     	if(!$_POST){
-    		$opts['siteName']  = 'Rocketr';
+    		$opts['siteName']  = getenv('APP_NAME');
     		$opts['pageTitle'] = 'New Marketing';
     		$opts['from'] = Auth::user()->username.'@seller'.'.'.preg_replace('#^http?://#','',url('/'));
     		return view('frontend.sellers.pages.marketing.new',$opts);

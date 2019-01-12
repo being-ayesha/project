@@ -13,7 +13,7 @@ class PayoutController extends Controller
     //Get Payouts details
 	public function index(PaymentLogsDataTable $dataTables)
 	{
-		$opts['siteName']  = 'Rocketr';
+		$opts['siteName']  = getenv('APP_NAME');
     	$opts['pageTitle'] = 'Affiliate Payouts';
     	return $dataTables->render('frontend.affiliates.pages.payouts.list',$opts);
 	}

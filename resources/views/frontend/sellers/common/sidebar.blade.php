@@ -1,5 +1,5 @@
 @php
-  $uriAll         = ['seller/product-embed','seller/settings/account','seller/settings/payment','seller/settings/security','seller/coupons','seller/add-coupon','seller/edit-coupon/{id}','seller/product-groups','seller','seller/dashboard','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}','seller/edit-product-groups/{id}','seller/orders/{status?}','seller/view-order/{id}','seller/new-marketing','seller/marketings','seller/analytics','seller/feedbacks','seller/affiliates','seller/payouts'];
+  $uriAll         = ['seller/product-embed','seller/settings/account','seller/settings/payment','seller/settings/security','seller/coupons','seller/add-coupon','seller/edit-coupon/{id}','seller/product-groups','seller','seller/dashboard','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}','seller/edit-product-groups/{id}','seller/orders/{status?}','seller/view-order/{id}','seller/new-marketing','seller/marketings','seller/analytics','seller/feedbacks','seller/affiliates','seller/payouts','seller/settings/enable-2fa'];
   $productsTabUri = ['seller/product-embed','seller/product-groups','seller/edit-product-groups/{id}','seller/products','seller/add-product-type','seller/add-product','seller/edit-product/{id}'];
   $ordersTabUri   = ['seller/orders/{status?}','seller/view-order/{id}'];
   $couponsTabUri  = ['seller/coupons','seller/add-coupon','seller/edit-coupon/{id}'];
@@ -7,7 +7,7 @@
   $analyticsTabUri= ['seller/analytics'];
   $feedbackTabUri = ['seller/feedbacks'];
   $affiliatesTabUri= ['seller/affiliates','seller/payouts'];
-  $settingsTabUri = ['seller/settings/account','seller/settings/payment','seller/settings/security'];
+  $settingsTabUri = ['seller/settings/account','seller/settings/payment','seller/settings/security','seller/settings/enable-2fa'];
   $currentUri     = Route::current()->uri();
 @endphp
 <div class="sidebar sidebar-dark sidebar-main sidebar-expand-md">

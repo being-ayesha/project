@@ -18,7 +18,7 @@ class ProductController extends Controller
 
     	if(!$_POST){
 
-    		$data['siteName']  = 'Rocketr';
+    		$data['siteName']  = getenv('APP_NAME');
     		$data['pageTitle'] = 'Affiliates Product';
     		return $dataTables->render("frontend.affiliates.pages.products.list",$data);
 

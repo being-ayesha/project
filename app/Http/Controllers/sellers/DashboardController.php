@@ -15,6 +15,10 @@ use App\models\frontend\sellers\ProductView;
 use App\models\frontend\sellers\Order;
 use App\models\frontend\sellers\PaymentSetting;
 use App\models\frontend\Currency;
+use App\models\frontend\UserDetail;
+use App\Http\Controllers\EmailController;
+use Illuminate\Support\Facades\Password;
+use Google2FA;
 class DashboardController extends Controller
 {
     /**
@@ -24,8 +28,8 @@ class DashboardController extends Controller
      */
     public function index(LastOrderListDataTable $dataTable)
     {
-
-       $data['siteName']    = 'Rocketr';
+        
+       $data['siteName']    = getenv('APP_NAME');
        $data['pageTitle']   = 'Home';
        $data['productView'] = ProductView::find(1);
        $data['order']       = $order =  Order::find(1);
@@ -74,6 +78,7 @@ class DashboardController extends Controller
     public function logout()
     {
         Auth::logout();
+        Google2FA::logout();
         return redirect('seller/login');
     }
 
@@ -86,13 +91,20 @@ class DashboardController extends Controller
     public function login(Request $request)
     {
        if(!$_POST){
-           $data['siteName']  = 'Rocketr';
+           $data['siteName']  = getenv('APP_NAME');
            $data['pageTitle'] = 'Seller Login';
+
+           if($request->token){
+            $user                    = User::where(['remember_token' => $request->token])->first();
+            if(@Auth::loginUsingId($user->id)){
+             return redirect('seller/dashboard'); 
+                }
+             }
            return view('frontend.sellers.pages.login',$data);
        }else{
             $rules = [
-                    'email' => 'required',
-                    'password' => 'required'
+                'email' => 'required',
+                'password' => 'required'
             ];
             $niceNames = [
                 'email' => 'Email',
@@ -103,44 +115,59 @@ class DashboardController extends Controller
             if($validator->fails()){
                 return back()->withErrors($validator)->withInput();
             }else{
-                $user                    = User::where(['email' => $request->email])->first();
-                $country_name            = Session::get('country_name');
+                $user  = User::where(['email' => $request->email])->first();
                 if($user){
-
-                    $userlogs                       = new UserLogs();
-                    $userlogs->user_id              = $user->id; 
-                    $userlogs->last_login_ip        = $request->ip();
-                    $userlogs->last_login_browser   = $request->header('User-Agent');
-                    $userlogs->last_login_country   = $country_name['geoplugin_city']." - ".$country_name['geoplugin_region']." - ".$country_name['geoplugin_countryName'];
-                    $userlogs->last_login_at        = date('Y-m-d H:i:s');
-
-                }
-                $credentails             = [];
+                    $credentails             = [];
                 $credentails['email']    = $request->email;
                 $credentails['password'] = $request->password;
                 if(@$user->status!='Inactive'){
-                    if(Auth::attempt($credentails)){
 
-                        $userlogs->last_login_status    = "Success";
-                        $userlogs->last_login_details   = "";
-                        $userlogs->save();
-
-                        return redirect('seller/dashboard');
+                    $userdetails = UserDetail::where(['user_id'=>@$user->id])->first();
+                    if(@$userdetails->email_verification == 1){
+                        $user->remember_token = $token = Password::getRepository()->createNewToken();
+                        $user->save();
+                        $responseData['email']    =  $user->email;
+                        $responseData['userName'] =  $user->username;
+                        $responseData['token']    =  url('seller/login').'/'.$token;
+                        EmailController::emailTwoFactor($responseData);
+                        Common::one_time_message('danger','Please Check Your Email For Two Factor Authentication.');
+                        return back()->withInput();
                     }else{
-                       if($user){
-                        $userlogs->last_login_status    = "Wrong Password";
-                        $userlogs->last_login_details   ="";
-                        $userlogs->save();
-                    }
+                        $country_name            = Session::get('country_name');
+
+                        $userlogs                       = new UserLogs();
+                        $userlogs->user_id              = $user->id; 
+                        $userlogs->last_login_ip        = \Request::ip();
+                        $userlogs->last_login_browser   = \Request::header('User-Agent');
+                        $userlogs->last_login_country   = $country_name['geoplugin_city']." - ".$country_name['geoplugin_region']." - ".$country_name['geoplugin_countryName'];
+                        $userlogs->last_login_at        = date('Y-m-d H:i:s');
+
+                        if(Auth::attempt($credentails)){
+                            $userlogs->last_login_status    = "Success";
+                            $userlogs->last_login_details   = "";
+                            $userlogs->save();
+                            return redirect('seller/dashboard');
+                        }else{
+                            
+                            $userlogs->last_login_status    = "Wrong Password";
+                            $userlogs->last_login_details   ="";
+                            $userlogs->save();
+
                         Common::one_time_message('danger','Log In Failed. Please Check Your Email/Password.');
                         return back()->withInput();
-                    }
+                    } 
+                }
+                    
                 }else{
                     Common::one_time_message('danger','Account is not active!');
                     return back()->withInput();
                 }
-            }
 
-       }
+                }else{
+                    Common::one_time_message('danger','Log In Failed. Please Check Your Email/Password.!');
+                    return back()->withInput();
+                }
+            }
+       } 
     }
 }

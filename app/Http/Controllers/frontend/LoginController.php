@@ -10,6 +10,9 @@ use Auth;
 use Validator;
 use Common;
 use Session;
+use App\models\frontend\UserDetail;
+use App\Http\Controllers\EmailController;
+use Illuminate\Support\Facades\Password;
 class LoginController extends Controller
 {
     /**
@@ -17,10 +20,17 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $opts['siteName']  = 'Rockter';
+        $opts['siteName']  = getenv('APP_NAME');
         $opts['pageTitle'] = 'Login';
+        
+        if($request->token){
+            $user = User::where(['remember_token' => $request->token])->first();
+            if(@Auth::loginUsingId($user->id)){
+                   return redirect('dashboard'); 
+               }
+           }
         return view('frontend.login',$opts);
     }
 
@@ -31,7 +41,7 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request)
     {
-        $country_name       =Session::get('country_name');
+        $country_name       = Session::get('country_name');
 
         $rules = [
                 'email' => 'required',
@@ -46,39 +56,63 @@ class LoginController extends Controller
         if($validator->fails()){
             return back()->withErrors($validator)->withInput();
         }else{
-            $user                    = User::where(['email' => $request->email])->first();
-            
+            $user = User::where(['email' => $request->email])->first();
             if($user){
-                $userlogs                       = new UserLogs();
-                $userlogs->user_id              = $user->id; 
-                $userlogs->last_login_ip        = $request->ip();
-                $userlogs->last_login_browser   = $request->header('User-Agent');
-                $userlogs->last_login_country   = $country_name['geoplugin_city']." - ".$country_name['geoplugin_region']." - ".$country_name['geoplugin_countryName'];
-                $userlogs->last_login_at        = date('Y-m-d H:i:s');
-            }
-            
-            $credentails             = [];
+                 $credentails             = [];
             $credentails['email']    = $request->email;
             $credentails['password'] = $request->password;
             if(@$user->status!='Inactive'){
-                if(Auth::attempt($credentails)){   
+               
+                $userdetails = UserDetail::where(['user_id'=>@$user->id])->first();
 
-                    $userlogs->last_login_status    = "Success";
-                    $userlogs->last_login_details   ="";
-                    $userlogs->save(); 
+                if(@$userdetails->email_verification==1){
 
-                    return redirect('dashboard');
+                    $user->remember_token = $token = Password::getRepository()->createNewToken();
+                    $user->save();
+                    $responseData['email']    =  $user->email;
+                    $responseData['userName'] =  $user->username;
+                    $responseData['token']    =  url('login').'/'.$token;
+                    EmailController::emailTwoFactor($responseData);
+                    Common::one_time_message('danger','Please Check Your Email For Two Factor Authentication.');
+                    return back()->withInput(); 
+                     
                 }else{
-                    if($user){
-                        $userlogs->last_login_status    = "Wrong Password";
+
+                    $userlogs                       = new UserLogs();
+                    $userlogs->user_id              = $user->id; 
+                    $userlogs->last_login_ip        = $request->ip();
+                    $userlogs->last_login_browser   = $request->header('User-Agent');
+                    $userlogs->last_login_country   = $country_name['geoplugin_city']." - ".$country_name['geoplugin_region']." - ".$country_name['geoplugin_countryName'];
+                    $userlogs->last_login_at        = date('Y-m-d H:i:s');
+                    
+                    if(Auth::attempt($credentails)){ 
+
+                        if($userdetails->two_step_verification == 1){
+                            return back();
+                        }  
+
+                        $userlogs->last_login_status    = "Success";
                         $userlogs->last_login_details   ="";
-                        $userlogs->save();
+                        $userlogs->save(); 
+                        return redirect('dashboard');
+                    }else{
+                        if($user){
+                            $userlogs->last_login_status    = "Wrong Password";
+                            $userlogs->last_login_details   ="";
+                            $userlogs->save();
+                        }
+                        Common::one_time_message('danger','Log In Failed. Please Check Your Email/Password.');
+                        return back()->withInput();
                     }
-                    Common::one_time_message('danger','Log In Failed. Please Check Your Email/Password.');
-                    return back()->withInput();
                 }
             }else{
                 Common::one_time_message('danger','Account is not active!');
+                return back()->withInput();
+
+            }
+
+            }else{
+                Common::one_time_message('danger','Log In Failed. Please Check Your Email/Password !');
                 return back()->withInput();
 
             }
@@ -86,9 +120,8 @@ class LoginController extends Controller
     }
 
     public function dashboard(){
-        $opts['siteName']  = 'Rockter';
+        $opts['siteName']  = getenv('APP_NAME');
         $opts['pageTitle'] = 'Home';
         return view('frontend.dashboard',$opts);
     }
-
 }

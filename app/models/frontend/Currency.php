@@ -9,6 +9,8 @@ class Currency extends Model
 {
     protected $table = 'currencies';
 
+
+	// For currecy code 
     public static function currencySymbol(){
 		$payment   = PaymentSetting::where(['type'=>'currency','account_id'=>Auth::user()->id])->first();
 		if(!empty($payment)){
@@ -17,5 +19,17 @@ class Currency extends Model
 		$cuerrency = Currency::where('id',1)->select('code')->first();
 		}
 		return $cuerrency->code;
+    }
+	// For currency symbol
+    public static function currencyCode(){
+
+    	$payment   = PaymentSetting::where(['type'=>'currency','account_id'=>Auth::user()->id])->first();
+		if(!empty($payment)){
+		$cuerrency = Currency::where('id',$payment->value)->select('symbol')->first();
+		}else{
+		$cuerrency = Currency::where('id',1)->select('symbol')->first();
+		}
+		return $cuerrency->symbol;
+
     }
 }

@@ -20,7 +20,7 @@ class CreateUserDetailsTable extends Migration
             $table->tinyInteger('email_verification')->default(0);
             $table->enum('two_step_verification_type',['email','googleauthenticator'])->nullable();
             $table->string('two_step_verification_code')->nullable();
-            $table->tinyInteger('two_step_verification')->nullable();
+            $table->tinyInteger('two_step_verification')->default(0);
             $table->enum('user_type',['merchant','seller']);
             $table->timestamps();
         });

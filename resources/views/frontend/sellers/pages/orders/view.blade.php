@@ -158,7 +158,7 @@
 								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->receiver_email}}</td>
 							</tr>
 							<tr>
-								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">Rocketr Fee</td>
+								<td style="font-size: 14px;font-weight:600;color: #98a6ad;padding: 2px">{{$siteName}} Fee</td>
 								<td style="padding: 5px;color: #2196f3">{{@$order->paymentDetails->site_fee}}</td>
 							</tr>
 							

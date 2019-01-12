@@ -33,7 +33,7 @@ class CreateOrdersTable extends Migration
             $table->enum('payment_status',['unpaid','paid'])->nullable();
             $table->enum('delivery_status',['Yes','No'])->nullable();
             $table->dateTime('order_date')->nullable();
-            $table->integer('affiliate_user_id')->unsigned()->index();
+            $table->integer('affiliate_user_id')->unsigned()->index()->nullable();
             $table->foreign('affiliate_user_id')->references('id')->on('users');
             $table->enum('is_affiliated',['Yes','No'])->default('No');
             $table->text('affiliate_amount')->nullable();

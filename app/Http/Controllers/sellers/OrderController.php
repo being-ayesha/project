@@ -14,7 +14,7 @@ class OrderController extends Controller
     public function index(OrderDataTable $dataTable)
     {
        
-        $opts['siteName']  = 'Rocketr';
+        $opts['siteName']  = getenv('APP_NAME');
         $opts['pageTitle'] = 'Order Litst';
         return $dataTable->render('frontend.sellers.pages.orders.list',$opts);
 
@@ -22,7 +22,7 @@ class OrderController extends Controller
 
     public function orderView($id){
 
-    	$option['siteName']  = 'Rocketr';
+    	$option['siteName']  = getenv('APP_NAME');
         $option['pageTitle'] = 'Order Details';
     	$option['order']     = $order = Order::with('paymentDetails')->where(['seller_id'=>Auth::user()->id,'order_uuid'=>$id])->first();
     	$option['address']     = json_decode(@$order->paymentDetails->sender_address);

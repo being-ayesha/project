@@ -3,7 +3,7 @@
 
 		<a href="{{url('seller')}}" >
 			<img src="{{asset('public/frontend/global_assets/images/logo_light.png')}}" alt="">
-			Rockter
+			{{$siteName}}
 		</a>
 	</div>
 	<div class="d-md-none">
@@ -310,8 +310,8 @@
 				<div class="dropdown-menu dropdown-menu-right">
 					<!-- <a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
 					<a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a> -->
-					<a class="dropdown-item" href="{{ url('seller/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="icon-switch2"></i> {{ __('Logout') }}</a>
-                    <form id="logout-form" action="{{ url('seller/logout') }}" method="POST" style="display: none;">
+					<a class="dropdown-item" href="{{ url('affiliates/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="icon-switch2"></i> {{ __('Logout') }}</a>
+                    <form id="logout-form" action="{{ url('affiliates/logout') }}" method="POST" style="display: none;">
                          @csrf
                     </form>
 				</div>

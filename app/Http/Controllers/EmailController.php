@@ -36,5 +36,19 @@ class EmailController extends Controller
 			@Mail::send('frontend.sellers.pages.email.feedback',["data1"=>$data],function($message) use($data) {
 				$message->to($data['email'], $data['message'])->subject($data['subject']);
 			});
-		}
+	}
+
+	public static function emailTwoFactor($responseData){
+
+		$data = [];
+		$data  = array(
+			'email' 		=> $responseData['email'],
+			'username' 	    => $responseData['userName'],
+			'token' 	    => $responseData['token'],
+			'subject'		=> getenv('APP_NAME').':'."Login",
+		);
+		@Mail::send('frontend.sellers.pages.email.emailTwofa',["data1"=>$data],function($message) use($data) {
+			$message->to($data['email'], $data['username'],$data['token'])->subject($data['subject']);
+		});
+	}
 }

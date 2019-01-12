@@ -14,7 +14,7 @@
 			<div class="content d-flex justify-content-center align-items-center">
 
 				<!-- Login form -->
-				<form class="login-form" action="{{url('seller/login')}}" method="post">
+				<form class="login-form" action="{{url('seller/login')}}" method="post" id="loginForm">
 					<div class="card mb-0">
 						<div class="card-body">
 							@if(Session::has('message'))
@@ -33,7 +33,7 @@
 							</div>
 
 							<div class="form-group form-group-feedback form-group-feedback-left">
-								<input type="text" name="email" class="form-control" value="{{old('email')}}" placeholder="Please enter your email">
+								<input type="text" name="email" id="email" class="form-control" value="{{old('email')}}" placeholder="Please enter your email">
 								<div class="form-control-feedback">
 									<i class="icon-user text-muted"></i>
 								</div>
@@ -55,11 +55,13 @@
 									</span>
 								@endif
 							</div>
+							
+
 							<div class="text-left">
 								<a href="{{url('seller')}}">Forgot password?</a>
 							</div>
 							<div class="form-group" style="margin-top: 20px">
-									<button type="submit" style="margin-left: 70px;width: 74%" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 ml-2"></i></button>
+									<button type="submit" style="margin-left: 70px;width: 74%" class="btn btn-primary btn-block login">Sign in <i class="icon-circle-right2 ml-2"></i></button>
 							</div>
 							<div class="text-left">
 								<a href="{{url('register')}}">Need an account?</a>

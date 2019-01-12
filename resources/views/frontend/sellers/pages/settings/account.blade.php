@@ -156,7 +156,7 @@
 										  <input class="form-check-input" name="receive_email_site_tips_updates" type="checkbox" {{@$settings->receive_email_site_tips_updates==1?'checked="checked"':''}} id="receive_email_site_tips_updates">
 										</div>
 										<label  class="form-check-label" for="receive_email_site_tips_updates" style="font-weight: 700;color:#797979;font-size:14px">
-										    Receive an e-mail with Rocketr tips and updates.  
+										    Receive an e-mail with {{$siteName}} tips and updates.  
 										</label>
 									</div>
 									<button type="submit" class="btn btn-md btn-primary">Save Changes</button>

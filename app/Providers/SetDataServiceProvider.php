@@ -15,6 +15,7 @@ class SetDataServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->country();
+        
     }
 
     /**
@@ -24,15 +25,17 @@ class SetDataServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        
     }
 
     public function country(){
-        // $ip      = getenv("REMOTE_ADDR");
-        $ip      = "220.158.205.5";
+        $ip      = getenv("REMOTE_ADDR");
+        //$ip      = "220.158.205.5";
         $result  = unserialize(@file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip));
-        // dd($result);
         Session::put('country_name', $result);
         
     }
+
+    
+
 }

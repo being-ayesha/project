@@ -1,12 +1,9 @@
 @include('frontend.common.header')
 	<!-- Main navbar -->
-		@include('frontend.common.mainnavbar')
+	@include('frontend.common.mainnavbar')
 	<!-- /main navbar -->
-
-
 	<!-- Page content -->
 	<div class="page-content">
-
 		<!-- Main content -->
 		<div class="content-wrapper">
 
@@ -59,7 +56,7 @@
 								<a href="{{url('/')}}">Forgot password?</a>
 							</div>
 							<div class="form-group" style="margin-top: 20px">
-									<button type="submit" style="margin-left: 70px;width: 74%" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 ml-2"></i></button>
+									<button type="submit" style="margin-left: 70px;width: 74%" class="btn btn-primary btn-block login">Sign in <i class="icon-circle-right2 ml-2"></i></button>
 							</div>
 							<div class="text-left">
 								<a href="{{url('register')}}">Need an account?</a>

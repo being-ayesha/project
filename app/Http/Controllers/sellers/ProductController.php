@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function index(ProductsDataTable $dataTable)
     {
-        $opts['siteName']  = 'Rocketr';
+        $opts['siteName']  = getenv('APP_NAME');
         $opts['pageTitle'] = 'Product Litst';
         return $dataTable->render('frontend.sellers.pages.products.list',$opts);
     }
@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function getProductType(Request $request)
     {
         if(!$_POST){
-            $opts['siteName']  = 'Rocketr';
+            $opts['siteName']  = getenv('APP_NAME');
             $opts['pageTitle'] = 'Add Product Type';
             return view('frontend.sellers.pages.products.producttype',$opts);
         }else{
@@ -81,7 +81,7 @@ class ProductController extends Controller
     public function addProduct(Request $request)
     {
         if(!$_POST){
-            $opts['siteName']     = 'Rocketr';
+            $opts['siteName']     = getenv('APP_NAME');
             $opts['pageTitle']    = 'Add Product';
             return view('frontend.sellers.pages.products.add',$opts);
         }else{
@@ -162,7 +162,7 @@ class ProductController extends Controller
         $product               = Product::where(['product_uuid' => $id])->first();
         if(!$_POST){
             $opts['products']  = $product;
-            $opts['siteName']  = 'Rocketr';
+            $opts['siteName']  = getenv('APP_NAME');
             $opts['pageTitle'] = 'Update Product';
             return view('frontend.sellers.pages.products.edit',$opts);
         }else{

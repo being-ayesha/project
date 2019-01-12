@@ -5,9 +5,27 @@
 	    });
 	}, 4000);
 
-	$(document).on('click','.login',function(){
-		let href = $(this).attr('href');
-		window.location.replace(href);
+	$(document).on('click','.login',function(e){
+		//let href  = $(this).attr('href');
+		//event.preventDefault();
+
+		// let email       = $("#email").val();
+		// var url   ="{{url('seller/_process')}}";
+		// $.ajax({
+		// 	url:url,
+		// 	method:"get",
+		// 	data:{'email':email},
+		// 	success:function(response){
+		// 		if(response.status==1){
+		// 			$(".twoFa").removeAttr('hidden');
+		// 				e.preventDefault();
+		// 			return false;
+		// 		}else{
+		// 			return true;
+		// 		}
+		// 	}
+		// })
+		
 	});
 
 $(function(){
@@ -54,7 +72,6 @@ $(function(){
  });
 
 $(function(){
-
 
 	$('#loginForm').validate({
 		rules: {

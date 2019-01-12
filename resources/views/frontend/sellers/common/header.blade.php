@@ -45,14 +45,15 @@
 	<script src="{{asset('public/frontend/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/plugins/ui/moment/moment.min.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/plugins/pickers/daterangepicker.js')}}"></script>
-	<!-- <script src="{{asset('public/frontend/global_assets/js/plugins/editors/summernote/summernote.min.js')}}"></script>
-	<script src="{{asset('public/frontend/global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script> -->
+	<!-- <script src="{{asset('public/frontend/global_assets/js/plugins/editors/summernote/summernote.min.js')}}"></script> -->
+	<script src="{{asset('public/frontend/global_assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/plugins/editors/ckeditor/ckeditor.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js')}}"></script>
 
 	<script src="{{asset('public/frontend/global_assets/js/plugins/forms/selects/select2.min.js')}}"></script>
 	<script src="{{asset('public/frontend/assets/js/app.js')}}"></script>
 	<script src="{{asset('public/frontend/global_assets/js/demo_pages/form_select2.js')}}"></script>
+	<script src="{{asset('public/frontend/global_assets/js/demo_pages/form_checkboxes_radios.js')}}"></script>
 
 	<!-- Date Time Picker -->
 	<script src="{{asset('public/frontend/global_assets/js/plugins/pickers/anytime.min.js')}}"></script>

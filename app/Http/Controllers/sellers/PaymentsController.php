@@ -20,7 +20,7 @@ class PaymentsController extends Controller
 {
     //Get individual product details and order create
     public function getIndividualProductDetails(Request $request , $username,$productUuid){
-    	$opts['siteName']  = 'Rocketr';
+    	$opts['siteName']  = getenv('APP_NAME');
     	$opts['pageTitle'] = 'Single Product';
     	$opts['user']      = $user    = User::where(['username' => base64_decode($username)])->first();
     	$opts['product']   = $product = Product::with('user','productType','productSocialOptions')->where(['seller_id'=> $user->id,'product_uuid' => $productUuid])->first();
@@ -115,13 +115,13 @@ class PaymentsController extends Controller
 		$paypalCredentials    = PaymentSetting::where($match)->pluck('value', 'name');
         $settingCurrency      = PaymentSetting::where(['account_id'=>$request->seller_id,'type'=>'currency','account' => 'seller'])->pluck('value', 'name');
         
-        if(empty($settingCurrency) || $paypalCredentials->isEmpty()){
-            Common::one_time_message('error', 'Please activate your account settings.');
+        if($settingCurrency->isEmpty() || $paypalCredentials->isEmpty()){
+            Common::one_time_message('error', 'Please activate your payment settings.');
             return back();
         }
 
-		$currency             = Currency::where('id',$settingCurrency['currency'])->first();
-		$purchaseData         =   [
+		$currency       = Currency::where('id',$settingCurrency['currency'])->first();
+		$purchaseData   = [
             'testMode'  => ($paypalCredentials['mode'] == 'sandbox') ? true : false,
             'amount'    => $order->amount,
             'currency'  => $currency->code,
@@ -195,7 +195,7 @@ class PaymentsController extends Controller
 		$this->completeOrder($purchaseResponseData,$checkoutResponseData);
     	$order                = Order::find(Session::get('order_id'));
 
-        $opts['siteName']   = 'Rocketr';
+        $opts['siteName']   = getenv('APP_NAME');
         $opts['pageTitle']  = 'Review';
         $opts['order']      = $order;
         return view('frontend.sellers.pages.review.review',$opts);

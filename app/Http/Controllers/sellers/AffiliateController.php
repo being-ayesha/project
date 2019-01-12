@@ -17,7 +17,7 @@ use Auth;
 class AffiliateController extends Controller
 {
     public function index(AffiliateProductsDataTable $dataTables){
-        $data['siteName']  = 'Rocketr';
+        $data['siteName']  = getenv('APP_NAME');
         $data['pageTitle'] = 'Affiliates';
         return $dataTables->render('frontend.sellers.pages.affiliates.list',$data);
     }
@@ -25,7 +25,7 @@ class AffiliateController extends Controller
     public function payouts(Request $request,AffiliatePayoutsDataTable $dataTables){
     	if(!$_POST){
 
-        $data['siteName']   = 'Rocketr';
+        $data['siteName']   = getenv('APP_NAME');
         $data['pageTitle']  = 'Affiliates';
         $data['affiliates'] = AffiliateProduct::where('seller_id',Auth::user()->id)->select('affiliate_id')->distinct('affiliate_id')->get();
         //dd($data['affiliates']);

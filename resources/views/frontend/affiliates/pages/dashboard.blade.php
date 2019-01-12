@@ -8,7 +8,7 @@
 			</div>
 			<div class="card-body">
 				<div style="margin-top: -20px">
-					<i class="fa fa-usd fa-2x" style="color:#26a69a"><span style="color:#26a69a; font-size: 30px; margin-left: 5px">{{$total_commission_made}}</span></i>
+					<i class="fa fa-{{@$currency}} fa-2x" style="color:#26a69a"><span style="color:#26a69a; font-size: 30px; margin-left: 5px">{{$total_commission_made}}</span></i>
 					<p style="color: #98a6ad; margin-top: 5px"> Last 24 hours :{{$daily_commission_made}} </p>
 					<p style="color: #98a6ad"> Last Week :{{$weekly_commission_made}}</p>
 				</div>

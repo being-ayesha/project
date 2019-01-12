@@ -24,7 +24,7 @@ class CreateAccountSettingsTable extends Migration
             $table->string('ipn_secret')->nullable();
             $table->tinyInteger('receive_email_product_sold')->nullable()->comment('Receive email when product is sold');
             $table->tinyInteger('receive_email_unsuccessfull_login')->nullable()->comment('Receive an e-mail when someone unsuccessfully attempts to login to your account');
-            $table->tinyInteger('receive_email_site_tips_updates')->nullable()->comment('Receive an e-mail with Rocketr tips and update');
+            $table->tinyInteger('receive_email_site_tips_updates')->nullable()->comment('Receive an e-mail with Creationshop tips and update');
             $table->timestamps();
         });
     }

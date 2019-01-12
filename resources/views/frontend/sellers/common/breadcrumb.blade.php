@@ -11,6 +11,18 @@
 
 		<div class="header-elements d-none">
 			<div class="breadcrumb justify-content-center">
+
+				<div class="breadcrumb-elements-item dropdown p-0">
+					<a href="#" class="breadcrumb-elements-item" data-toggle="dropdown">
+						<i class="icon-rotate-ccw2 mr-2"></i>
+						Switch
+					</a>
+
+					<div class="dropdown-menu dropdown-menu-right">
+						<a href="{{url('merchants')}}" class="dropdown-item">Switch to {{$siteName}} Payments</a>
+					</div>
+				</div>
+
 				<div class="breadcrumb-elements-item dropdown p-0">
 					<a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">
 						<i class="icon-gear mr-2"></i>
