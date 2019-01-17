@@ -1,0 +1,18 @@
+{
+	"name":"Creationshop",
+	"description":"Creationshop PHP Library",
+	"license":"MIT",
+	"version":1.1,
+	"authors": [{
+		"name": "Creationshop",
+		"email": "shakil.techvill@gmail.com"
+	}],
+	"require": {
+		"php": ">=7.1.3",
+		"ext-curl": "*",
+		"ext-json": "*"
+	},
+	"autoload": {
+		"psr-4": { "Creationshop\\" : "lib/" }
+	}
+}

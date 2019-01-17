@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2018 at 11:25 AM
+-- Generation Time: Jan 17, 2019 at 10:00 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `rocketrtest`
+-- Database: `rocketr2`
 --
 
 -- --------------------------------------------------------
@@ -38,7 +38,7 @@ CREATE TABLE `account_settings` (
   `ipn_secret` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `receive_email_product_sold` tinyint(4) DEFAULT NULL COMMENT 'Receive email when product is sold',
   `receive_email_unsuccessfull_login` tinyint(4) DEFAULT NULL COMMENT 'Receive an e-mail when someone unsuccessfully attempts to login to your account',
-  `receive_email_site_tips_updates` tinyint(4) DEFAULT NULL COMMENT 'Receive an e-mail with Rocketr tips and update',
+  `receive_email_site_tips_updates` tinyint(4) DEFAULT NULL COMMENT 'Receive an e-mail with Creationshop tips and update',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -193,7 +193,126 @@ CREATE TABLE `merchants` (
 --
 
 INSERT INTO `merchants` (`id`, `user_id`, `merchant_tier_id`, `merchant_uuid`, `first_name`, `last_name`, `address_line_1`, `address_line_2`, `city`, `state`, `postal_code`, `country`, `business_name`, `business_description`, `business_company`, `merchant_website`, `created_at`, `updated_at`) VALUES
-(1, 1, NULL, 'ITZ2B7LKTOLAI', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-12-13 04:17:35', '2018-12-13 04:17:35');
+(1, 1, NULL, '1UU0BRSRFU0JK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-01-02 04:07:36', '2019-01-02 04:07:36'),
+(2, 2, NULL, 'ZHFFAQH4LYYSJ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-01-02 04:22:27', '2019-01-02 04:22:27'),
+(3, 3, NULL, 'M6JD12783FK35', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-01-12 23:24:27', '2019-01-12 23:24:27');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `merchant_apps`
+--
+
+CREATE TABLE `merchant_apps` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `merchant_id` int(10) UNSIGNED NOT NULL,
+  `app_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'App Name.',
+  `app_description` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `app_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Application Id.',
+  `app_secrect` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Application Secrect Key.',
+  `scope` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `merchant_apps`
+--
+
+INSERT INTO `merchant_apps` (`id`, `merchant_id`, `app_name`, `app_description`, `app_id`, `app_secrect`, `scope`, `created_at`, `updated_at`) VALUES
+(1, 1, 'new', 'one', 'newbtiYORIE7SHkAXvjGqMQ3B8KszmpPJ', 'MjhqTWdBRndxbkp1V2k2Q2JoVm1TSDR2b1lJSzcxcHhkeTVMOURFME9adFFlVHNYY1U=', '[\"orders\",\"invoices\",\"merchants\"]', '2019-01-05 23:45:35', '2019-01-05 23:45:35'),
+(2, 1, 'new1', 'one', 'new1VMK2PD3zxn9TJrypgjiR06CQamWqUu', 'QklBYXB3TmJleTFmaFV6RzBRN0tKVk1TV085MllndUZpdmNuOEw2cmtabVRFREhYbHQ=', '[\"orders\",\"invoices\",\"merchants\"]', '2019-01-05 23:45:45', '2019-01-05 23:45:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `merchant_invoices`
+--
+
+CREATE TABLE `merchant_invoices` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `invoice_uid` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Unique for each Invoice',
+  `merchant_id` int(10) UNSIGNED NOT NULL,
+  `payment_method_id` int(10) UNSIGNED NOT NULL,
+  `currency` text COLLATE utf8mb4_unicode_ci,
+  `amount` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quantity` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `paid_amount` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `invoice_status` text COLLATE utf8mb4_unicode_ci,
+  `buyer_email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notes` text COLLATE utf8mb4_unicode_ci,
+  `browser_redirect` text COLLATE utf8mb4_unicode_ci COMMENT 'The URL to redirect Merchant Pages.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `merchant_invoices`
+--
+
+INSERT INTO `merchant_invoices` (`id`, `invoice_uid`, `merchant_id`, `payment_method_id`, `currency`, `amount`, `quantity`, `description`, `paid_amount`, `invoice_status`, `buyer_email`, `notes`, `browser_redirect`, `created_at`, `updated_at`) VALUES
+(1, 'A6BE78IB8RU7', 1, 1, '1', '11', NULL, NULL, NULL, 'Paid', 'shakil.techvill@gmail.com', NULL, NULL, '2019-01-02 04:39:56', '2019-01-02 04:40:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `merchant_orders`
+--
+
+CREATE TABLE `merchant_orders` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `order_uid` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Unique for each Order',
+  `merchant_id` int(10) UNSIGNED NOT NULL,
+  `invoice_id` int(10) UNSIGNED NOT NULL,
+  `payment_method_id` int(10) UNSIGNED NOT NULL,
+  `amount` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `currency` text COLLATE utf8mb4_unicode_ci,
+  `order_status` text COLLATE utf8mb4_unicode_ci,
+  `buyer_email` text COLLATE utf8mb4_unicode_ci,
+  `ipn_url` text COLLATE utf8mb4_unicode_ci,
+  `notes` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `merchant_orders`
+--
+
+INSERT INTO `merchant_orders` (`id`, `order_uid`, `merchant_id`, `invoice_id`, `payment_method_id`, `amount`, `currency`, `order_status`, `buyer_email`, `ipn_url`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 'VFJ4GECCSM9P', 1, 1, 1, '11', '1', 'Paid', 'shakil.techvill@gmail.com', NULL, NULL, '2019-01-02 04:39:57', '2019-01-02 04:40:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `merchant_payment_details`
+--
+
+CREATE TABLE `merchant_payment_details` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `invoice_id` int(10) UNSIGNED NOT NULL,
+  `order_id` int(10) UNSIGNED NOT NULL,
+  `payment_method_id` int(10) UNSIGNED NOT NULL,
+  `transaction_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Generate unique id for each transaction',
+  `payment_status` enum('Paid','Unpaid') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_method_email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount_paid` decimal(8,2) DEFAULT NULL,
+  `payment_method_fees` decimal(8,2) DEFAULT NULL,
+  `sender_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sender_address` text COLLATE utf8mb4_unicode_ci,
+  `receiver_email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `site_fee` decimal(8,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `merchant_payment_details`
+--
+
+INSERT INTO `merchant_payment_details` (`id`, `invoice_id`, `order_id`, `payment_method_id`, `transaction_id`, `payment_status`, `payment_method_email`, `amount_paid`, `payment_method_fees`, `sender_name`, `sender_address`, `receiver_email`, `site_fee`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, '12H11978GP655060E', 'Paid', 'techvillage_personal@gmail.com', '11.00', '0.62', 'tech village', '{\"Street\":\"1 Main St\",\"City\":\"San Jose\",\"State\":\"CA\",\"Zip\":\"95131\",\"country_code\":\"US\",\"country_name\":\"United States\"}', 'techvillage_business@gmail.com', '0.00', '2019-01-02 04:40:38', '2019-01-02 04:40:38');
 
 -- --------------------------------------------------------
 
@@ -255,7 +374,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (23, '2018_12_08_064628_create_affiliates_table', 1),
 (24, '2018_12_08_065022_create_affiliate_products_table', 1),
 (25, '2018_12_08_111924_create_affiliate_payouts_table', 1),
-(26, '2018_12_09_064337_create_sessions_table', 1);
+(26, '2018_12_09_064337_create_sessions_table', 1),
+(27, '2018_12_24_102650_create_merchant_invoices_table', 1),
+(28, '2018_12_25_043659_create_payment_buttons_table', 1),
+(29, '2018_12_27_061318_create_merchant_apps_table', 1),
+(30, '2018_12_27_102620_create_merchant_orders_table', 1),
+(31, '2018_12_27_102627_create_merchant_payment_details_table', 1);
 
 -- --------------------------------------------------------
 
@@ -280,13 +404,21 @@ CREATE TABLE `orders` (
   `payment_status` enum('unpaid','paid') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `delivery_status` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `order_date` datetime DEFAULT NULL,
-  `affiliate_user_id` int(10) UNSIGNED NOT NULL,
+  `affiliate_user_id` int(10) UNSIGNED DEFAULT NULL,
   `is_affiliated` enum('Yes','No') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'No',
   `affiliate_amount` text COLLATE utf8mb4_unicode_ci,
   `notes` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `seller_id`, `product_id`, `order_uuid`, `buyer_email`, `buyer_country`, `buyer_ip`, `coupon_code`, `coupon_activate_date`, `http_referer`, `amount`, `payment_method_id`, `product_quantity`, `payment_status`, `delivery_status`, `order_date`, `affiliate_user_id`, `is_affiliated`, `affiliate_amount`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'nCF4o5ecwwWnncgwIwg5', 'atik@gmail.com', NULL, 'fe80::a574:a8e8:8c29:254e', NULL, NULL, 'http://aminul-pc/rocketr/buy/QXRpaw==/UELKGGCHKGPGB', '50.00', 1, 1, 'unpaid', NULL, '2019-01-02 00:00:00', NULL, 'No', NULL, NULL, '2019-01-02 05:05:12', '2019-01-02 05:05:36'),
+(2, 1, 1, 'UZNB8v2qxuxKNPGStL1J', 'atik@gmail.com', NULL, 'fe80::a574:a8e8:8c29:254e', NULL, NULL, 'http://aminul-pc/rocketr/buy/QXRpaw==/UELKGGCHKGPGB', '50.00', 1, 1, 'paid', NULL, '2019-01-02 00:00:00', NULL, 'No', NULL, NULL, '2019-01-02 05:09:22', '2019-01-02 05:10:02');
 
 -- --------------------------------------------------------
 
@@ -299,6 +431,32 @@ CREATE TABLE `password_resets` (
   `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_buttons`
+--
+
+CREATE TABLE `payment_buttons` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `invoice_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` int(11) DEFAULT NULL,
+  `browser_redirect_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The URL to redirect the buyer to after payment.',
+  `ipn_redirect_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The URL to send purchase notifications to. Learn more here.',
+  `buyer_shipping` enum('Yes','No') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'No',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payment_buttons`
+--
+
+INSERT INTO `payment_buttons` (`id`, `user_id`, `invoice_id`, `username`, `price`, `browser_redirect_url`, `ipn_redirect_url`, `buyer_shipping`, `created_at`, `updated_at`) VALUES
+(1, 1, 'A6BE78IB8RU7', 'Atik', 11, NULL, NULL, '', '2019-01-02 04:16:26', '2019-01-02 04:16:26');
 
 -- --------------------------------------------------------
 
@@ -322,6 +480,13 @@ CREATE TABLE `payment_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payment_details`
+--
+
+INSERT INTO `payment_details` (`id`, `order_id`, `payment_method_id`, `transaction_id`, `payment_status`, `payment_method_email`, `amount_paid`, `payment_method_fees`, `sender_name`, `sender_address`, `receiver_email`, `site_fee`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, '9MB76055EY559714A', 'Paid', 'techvillage_personal@gmail.com', '50.00', '1.75', 'tech village', '{\"Street\":\"1 Main St\",\"City\":\"San Jose\",\"State\":\"CA\",\"Zip\":\"95131\",\"country_code\":\"US\",\"country_name\":\"United States\"}', 'techvillage_business@gmail.com', '0.00', '2019-01-02 05:10:03', '2019-01-02 05:10:03');
 
 -- --------------------------------------------------------
 
@@ -361,6 +526,25 @@ CREATE TABLE `payment_settings` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `payment_settings`
+--
+
+INSERT INTO `payment_settings` (`id`, `account_id`, `name`, `value`, `type`, `account`, `created_at`, `updated_at`) VALUES
+(1, 1, 'username', 'techvillage_business_api1.gmail.com', 'paypal', 'merchants', '2019-01-02 04:17:56', '2019-01-02 04:17:56'),
+(2, 1, 'password', '9DDYZX2JLA6QL668', 'paypal', 'merchants', '2019-01-02 04:17:56', '2019-01-02 04:17:56'),
+(3, 1, 'signature', 'AFcWxV21C7fd0v3bYYYRCpSSRl31ABayz5pdk84jno7.Udj6-U8ffwbT', 'paypal', 'merchants', '2019-01-02 04:17:56', '2019-01-02 04:17:56'),
+(4, 1, 'mode', 'sandbox', 'paypal', 'merchants', '2019-01-02 04:17:56', '2019-01-02 04:17:56'),
+(5, 1, 'status', 'active', 'paypal', 'merchants', '2019-01-02 04:17:56', '2019-01-02 04:17:56'),
+(6, 1, 'currency', '1', 'currency', 'merchants', '2019-01-02 04:19:59', '2019-01-02 04:19:59'),
+(7, 2, 'currency', '1', 'currency', 'merchants', '2019-01-02 04:36:54', '2019-01-02 04:39:16'),
+(8, 1, 'currency', '1', 'currency', 'seller', '2019-01-02 05:08:12', '2019-01-02 05:08:12'),
+(9, 1, 'username', 'techvillage_business_api1.gmail.com', 'paypal', 'seller', '2019-01-02 05:08:59', '2019-01-02 05:08:59'),
+(10, 1, 'password', '9DDYZX2JLA6QL668', 'paypal', 'seller', '2019-01-02 05:08:59', '2019-01-02 05:08:59'),
+(11, 1, 'signature', 'AFcWxV21C7fd0v3bYYYRCpSSRl31ABayz5pdk84jno7.Udj6-U8ffwbT', 'paypal', 'seller', '2019-01-02 05:08:59', '2019-01-02 05:08:59'),
+(12, 1, 'mode', 'sandbox', 'paypal', 'seller', '2019-01-02 05:08:59', '2019-01-02 05:08:59'),
+(13, 1, 'status', 'active', 'paypal', 'seller', '2019-01-02 05:08:59', '2019-01-02 05:08:59');
+
 -- --------------------------------------------------------
 
 --
@@ -398,7 +582,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `seller_id`, `product_type_id`, `product_uuid`, `product_title`, `product_description`, `product_photo`, `downloadable_file`, `stock`, `limit_downloads`, `watermark_pdf_file`, `price`, `payment_method_id`, `buyer_purchase_permission`, `product_delivery_email_message`, `code_separator`, `added_codes`, `codes_purchase_permission`, `purchase_limit`, `affiliate_permission`, `affiliate_rate`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '4MVKUEUYW9SWY', 'Demo Product', '<p>Demo product Details</p>', '1544696377_logo2.png', NULL, -1, NULL, NULL, 50, '1', 1, 'Hello {buyerName},Thank you for purchasing {productTitle}.Here is the license you purchased: {codePurchased}', NULL, NULL, NULL, NULL, 'Yes', '10.00', '2018-12-13 04:19:38', '2018-12-13 04:19:38');
+(1, 1, 1, 'UELKGGCHKGPGB', 'Vrent', '<p>Vacation Rental</p>', '1546426422_Screenshot_3.png', '1546426423_Screenshot_3.png', -1, NULL, NULL, 50, '1', 1, 'Hello {buyerName},Thank you for purchasing {productTitle}.Here is the license you purchased: {codePurchased}', NULL, NULL, NULL, NULL, 'Yes', '10.00', '2019-01-02 04:53:43', '2019-01-02 04:53:43');
 
 -- --------------------------------------------------------
 
@@ -420,7 +604,7 @@ CREATE TABLE `product_groups` (
 --
 
 INSERT INTO `product_groups` (`id`, `seller_id`, `product_id`, `product_group_title`, `created_at`, `updated_at`) VALUES
-(1, 1, '[\"1\"]', 'Demo', '2018-12-13 04:19:58', '2018-12-13 04:19:58');
+(1, 1, '[\"1\"]', 'Techvillage Product', '2019-01-02 04:55:56', '2019-01-02 04:55:56');
 
 -- --------------------------------------------------------
 
@@ -438,6 +622,13 @@ CREATE TABLE `product_reviews` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_reviews`
+--
+
+INSERT INTO `product_reviews` (`id`, `seller_id`, `order_id`, `review_count`, `comment`, `response`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, 5, 'Nice', NULL, '2019-01-02 05:11:37', '2019-01-02 05:11:37');
 
 -- --------------------------------------------------------
 
@@ -460,9 +651,9 @@ CREATE TABLE `product_social_options` (
 --
 
 INSERT INTO `product_social_options` (`id`, `seller_id`, `product_id`, `social_platform_name`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'facebook', 'Active', '2018-12-13 04:19:38', '2018-12-13 04:19:38'),
-(2, 1, 1, 'twitter', 'Active', '2018-12-13 04:19:38', '2018-12-13 04:19:38'),
-(3, 1, 1, 'pininterest', 'Active', '2018-12-13 04:19:38', '2018-12-13 04:19:38');
+(1, 1, 1, 'facebook', 'Inactive', '2019-01-02 04:53:43', '2019-01-02 04:53:43'),
+(2, 1, 1, 'twitter', 'Inactive', '2019-01-02 04:53:44', '2019-01-02 04:53:44'),
+(3, 1, 1, 'pininterest', 'Inactive', '2019-01-02 04:53:44', '2019-01-02 04:53:44');
 
 -- --------------------------------------------------------
 
@@ -509,7 +700,12 @@ CREATE TABLE `product_views` (
 --
 
 INSERT INTO `product_views` (`id`, `product_id`, `seller_id`, `browser`, `product_views_date`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:63.0) Gecko/20100101 Firefox/63.0', '2018-12-13', '2018-12-13 04:20:18', '2018-12-13 04:20:18');
+(1, 1, 1, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', '2019-01-02', '2019-01-02 04:53:55', '2019-01-02 04:53:55'),
+(2, 1, 1, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', '2019-01-02', '2019-01-02 04:56:12', '2019-01-02 04:56:12'),
+(3, 1, 1, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', '2019-01-02', '2019-01-02 05:05:11', '2019-01-02 05:05:11'),
+(4, 1, 1, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', '2019-01-02', '2019-01-02 05:05:38', '2019-01-02 05:05:38'),
+(5, 1, 1, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', '2019-01-02', '2019-01-02 05:09:16', '2019-01-02 05:09:16'),
+(6, 1, 1, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', '2019-01-02', '2019-01-02 05:14:06', '2019-01-02 05:14:06');
 
 -- --------------------------------------------------------
 
@@ -531,7 +727,9 @@ CREATE TABLE `sellers` (
 --
 
 INSERT INTO `sellers` (`id`, `user_id`, `seller_group_id`, `seller_uuid`, `created_at`, `updated_at`) VALUES
-(1, 1, NULL, 'E3LATXGAJBRM5', '2018-12-13 04:17:35', '2018-12-13 04:17:35');
+(1, 1, NULL, 'IKZYEWJ7INHWG', '2019-01-02 04:07:36', '2019-01-02 04:07:36'),
+(2, 2, NULL, '95MU9CRXAM7LB', '2019-01-02 04:22:27', '2019-01-02 04:22:27'),
+(3, 3, NULL, 'BVAFAJAMNT5OV', '2019-01-12 23:24:27', '2019-01-12 23:24:27');
 
 -- --------------------------------------------------------
 
@@ -561,13 +759,6 @@ CREATE TABLE `sessions` (
   `last_activity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `sessions`
---
-
-INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('ty84elEevlUEfsfoQuFMzA3GJ3QoYw8O64B6iKjA', 1, '192.168.0.111', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:63.0) Gecko/20100101 Firefox/63.0', 'YTo2OntzOjEyOiJjb3VudHJ5X25hbWUiO2E6MjQ6e3M6MTc6Imdlb3BsdWdpbl9yZXF1ZXN0IjtzOjEzOiIyMjAuMTU4LjIwNS41IjtzOjE2OiJnZW9wbHVnaW5fc3RhdHVzIjtpOjIwMDtzOjE1OiJnZW9wbHVnaW5fZGVsYXkiO3M6MzoiMG1zIjtzOjE2OiJnZW9wbHVnaW5fY3JlZGl0IjtzOjE0NToiU29tZSBvZiB0aGUgcmV0dXJuZWQgZGF0YSBpbmNsdWRlcyBHZW9MaXRlIGRhdGEgY3JlYXRlZCBieSBNYXhNaW5kLCBhdmFpbGFibGUgZnJvbSA8YSBocmVmPVwnaHR0cDovL3d3dy5tYXhtaW5kLmNvbVwnPmh0dHA6Ly93d3cubWF4bWluZC5jb208L2E+LiI7czoxNDoiZ2VvcGx1Z2luX2NpdHkiO3M6NToiRGhha2EiO3M6MTY6Imdlb3BsdWdpbl9yZWdpb24iO3M6MTQ6IkRoYWthIERpdmlzaW9uIjtzOjIwOiJnZW9wbHVnaW5fcmVnaW9uQ29kZSI7czoyOiIxMyI7czoyMDoiZ2VvcGx1Z2luX3JlZ2lvbk5hbWUiO3M6NToiRGhha2EiO3M6MTg6Imdlb3BsdWdpbl9hcmVhQ29kZSI7czowOiIiO3M6MTc6Imdlb3BsdWdpbl9kbWFDb2RlIjtzOjA6IiI7czoyMToiZ2VvcGx1Z2luX2NvdW50cnlDb2RlIjtzOjI6IkJEIjtzOjIxOiJnZW9wbHVnaW5fY291bnRyeU5hbWUiO3M6MTA6IkJhbmdsYWRlc2giO3M6MTQ6Imdlb3BsdWdpbl9pbkVVIjtpOjA7czoxOToiZ2VvcGx1Z2luX2V1VkFUcmF0ZSI7YjowO3M6MjM6Imdlb3BsdWdpbl9jb250aW5lbnRDb2RlIjtzOjI6IkFTIjtzOjIzOiJnZW9wbHVnaW5fY29udGluZW50TmFtZSI7czo0OiJBc2lhIjtzOjE4OiJnZW9wbHVnaW5fbGF0aXR1ZGUiO3M6NzoiMjMuODUxNSI7czoxOToiZ2VvcGx1Z2luX2xvbmdpdHVkZSI7czo2OiI5MC40MDMiO3M6MzI6Imdlb3BsdWdpbl9sb2NhdGlvbkFjY3VyYWN5UmFkaXVzIjtzOjQ6IjEwMDAiO3M6MTg6Imdlb3BsdWdpbl90aW1lem9uZSI7czoxMDoiQXNpYS9EaGFrYSI7czoyMjoiZ2VvcGx1Z2luX2N1cnJlbmN5Q29kZSI7czozOiJCRFQiO3M6MjQ6Imdlb3BsdWdpbl9jdXJyZW5jeVN5bWJvbCI7czoyOiJUayI7czoyOToiZ2VvcGx1Z2luX2N1cnJlbmN5U3ltYm9sX1VURjgiO3M6MjoiVGsiO3M6Mjc6Imdlb3BsdWdpbl9jdXJyZW5jeUNvbnZlcnRlciI7czo3OiI4My42NDAyIjt9czo2OiJfdG9rZW4iO3M6NDA6Imlja0VDOXlqSnJ6VW0zQ21nM2hWVnlIZUQzNEJUN2dFcU1jTlpDSWUiO3M6MzoidXJsIjthOjE6e3M6ODoiaW50ZW5kZWQiO3M6MzE6Imh0dHA6Ly9hbWludWwtcGMvcm9ja2V0ci9zZWxsZXIiO31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo1MToiaHR0cDovL2FtaW51bC1wYy9yb2NrZXRyL2J1eS9SR1Z0Ync9PS80TVZLVUVVWVc5U1dZIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fdXNlcnNfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1544696418);
-
 -- --------------------------------------------------------
 
 --
@@ -593,7 +784,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `phone`, `email`, `google2fa_secret`, `password`, `status`, `profile_photo`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Demo', NULL, 'demo@techvill.net', NULL, '$2y$10$J7KrpvX8IRi59Gty.Tam/uLmH2088keJMjuV7DuqhyKH1MlbRay2q', 'Active', NULL, NULL, '2018-12-13 04:17:34', '2018-12-13 04:17:34');
+(1, 'Atik', NULL, 'shakil.techvill@gmail.com', NULL, '$2y$10$hyLAkufZVe17mMM5bk8KjOFaoLgVkxnr.L/2sOkVWpo8HelHiSyTm', 'Active', NULL, '1n7DI5lflMSXxxi5bfAZ5JYDr4nZ7115I5ZB8oD93msjInJqYqZVrcNndCtK', '2019-01-02 04:07:36', '2019-01-02 04:07:36'),
+(2, 'shakil', NULL, 'atik@gmail.com', NULL, '$2y$10$gs6l8LGy4LSe/nThjuLRs.ImQ.t6vDFz/gsK.cEimpblyZ6IBNyxG', 'Active', NULL, 'PQSNYfelBBc2y8jbFrQv1Ehgf3PssK0szT6aQDY3Aznd0GaJkY8tMnPKcUxr', '2019-01-02 04:22:26', '2019-01-02 04:22:26'),
+(3, 'atkjs', NULL, 'shakil@gmail.com', NULL, '$2y$10$tiuauvwaBWD0EIqzLWBlDeeUqSZaLi3N3hy.JfQZIsL9E1KxfKl.u', 'Active', NULL, 'nGfMlsgIzgavqXPNNYgahCULbLqZw30CFb8ZE1R3oRVdQSmXZjl5YHeh9xo4', '2019-01-12 23:24:26', '2019-01-12 23:24:26');
 
 -- --------------------------------------------------------
 
@@ -607,7 +800,7 @@ CREATE TABLE `user_details` (
   `email_verification` tinyint(4) NOT NULL DEFAULT '0',
   `two_step_verification_type` enum('email','googleauthenticator') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `two_step_verification_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `two_step_verification` tinyint(4) DEFAULT NULL,
+  `two_step_verification` tinyint(4) NOT NULL DEFAULT '0',
   `user_type` enum('merchant','seller') COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -618,8 +811,12 @@ CREATE TABLE `user_details` (
 --
 
 INSERT INTO `user_details` (`id`, `user_id`, `email_verification`, `two_step_verification_type`, `two_step_verification_code`, `two_step_verification`, `user_type`, `created_at`, `updated_at`) VALUES
-(1, 1, 0, NULL, NULL, NULL, 'merchant', '2018-12-13 04:17:34', '2018-12-13 04:17:34'),
-(2, 1, 0, NULL, NULL, NULL, 'seller', '2018-12-13 04:17:35', '2018-12-13 04:17:35');
+(1, 1, 0, NULL, NULL, 0, 'merchant', '2019-01-02 04:07:36', '2019-01-02 04:07:36'),
+(2, 1, 0, NULL, NULL, 0, 'seller', '2019-01-02 04:07:36', '2019-01-02 04:07:36'),
+(3, 2, 0, NULL, NULL, 0, 'merchant', '2019-01-02 04:22:27', '2019-01-02 04:22:27'),
+(4, 2, 0, NULL, NULL, 0, 'seller', '2019-01-02 04:22:27', '2019-01-02 04:22:27'),
+(5, 3, 0, NULL, NULL, 0, 'merchant', '2019-01-12 23:24:26', '2019-01-12 23:24:26'),
+(6, 3, 0, NULL, NULL, 0, 'seller', '2019-01-12 23:24:26', '2019-01-12 23:24:26');
 
 -- --------------------------------------------------------
 
@@ -645,7 +842,14 @@ CREATE TABLE `user_logs` (
 --
 
 INSERT INTO `user_logs` (`id`, `user_id`, `last_login_ip`, `last_login_browser`, `last_login_country`, `last_login_at`, `last_login_status`, `last_login_details`, `created_at`, `updated_at`) VALUES
-(1, 1, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:63.0) Gecko/20100101 Firefox/63.0', 'Dhaka - Dhaka Division - Bangladesh', '2018-12-13 04:17:47', 'Success', '', '2018-12-13 04:17:47', '2018-12-13 04:17:47');
+(1, 1, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-02 04:07:42', 'Success', '', '2019-01-02 04:07:42', '2019-01-02 04:07:42'),
+(2, 2, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-02 04:22:41', 'Success', '', '2019-01-02 04:22:41', '2019-01-02 04:22:41'),
+(3, 1, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-02 05:37:00', 'Success', '', '2019-01-02 05:37:00', '2019-01-02 05:37:00'),
+(4, 1, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-02 22:56:37', 'Success', '', '2019-01-02 22:56:37', '2019-01-02 22:56:37'),
+(5, 1, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-05 23:45:09', 'Success', '', '2019-01-05 23:45:09', '2019-01-05 23:45:09'),
+(6, 3, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-12 23:24:41', 'Success', '', '2019-01-12 23:24:41', '2019-01-12 23:24:41'),
+(7, 1, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-12 23:58:37', 'Success', '', '2019-01-12 23:58:37', '2019-01-12 23:58:37'),
+(8, 1, 'fe80::a574:a8e8:8c29:254e', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0', ' -  - ', '2019-01-13 02:11:02', 'Success', '', '2019-01-13 02:11:03', '2019-01-13 02:11:03');
 
 --
 -- Indexes for dumped tables
@@ -720,6 +924,42 @@ ALTER TABLE `merchants`
   ADD KEY `merchants_merchant_tier_id_index` (`merchant_tier_id`);
 
 --
+-- Indexes for table `merchant_apps`
+--
+ALTER TABLE `merchant_apps`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `merchant_apps_merchant_id_index` (`merchant_id`);
+
+--
+-- Indexes for table `merchant_invoices`
+--
+ALTER TABLE `merchant_invoices`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `merchant_invoices_invoice_uid_unique` (`invoice_uid`),
+  ADD KEY `merchant_invoices_merchant_id_index` (`merchant_id`),
+  ADD KEY `merchant_invoices_payment_method_id_index` (`payment_method_id`);
+
+--
+-- Indexes for table `merchant_orders`
+--
+ALTER TABLE `merchant_orders`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `merchant_orders_order_uid_unique` (`order_uid`),
+  ADD KEY `merchant_orders_merchant_id_index` (`merchant_id`),
+  ADD KEY `merchant_orders_invoice_id_index` (`invoice_id`),
+  ADD KEY `merchant_orders_payment_method_id_index` (`payment_method_id`);
+
+--
+-- Indexes for table `merchant_payment_details`
+--
+ALTER TABLE `merchant_payment_details`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `merchant_payment_details_transaction_id_unique` (`transaction_id`),
+  ADD KEY `merchant_payment_details_invoice_id_index` (`invoice_id`),
+  ADD KEY `merchant_payment_details_order_id_index` (`order_id`),
+  ADD KEY `merchant_payment_details_payment_method_id_index` (`payment_method_id`);
+
+--
 -- Indexes for table `merchant_tiers`
 --
 ALTER TABLE `merchant_tiers`
@@ -749,6 +989,13 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `payment_buttons`
+--
+ALTER TABLE `payment_buttons`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `payment_buttons_user_id_index` (`user_id`);
 
 --
 -- Indexes for table `payment_details`
@@ -927,6 +1174,30 @@ ALTER TABLE `email_campaigns`
 -- AUTO_INCREMENT for table `merchants`
 --
 ALTER TABLE `merchants`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `merchant_apps`
+--
+ALTER TABLE `merchant_apps`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `merchant_invoices`
+--
+ALTER TABLE `merchant_invoices`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `merchant_orders`
+--
+ALTER TABLE `merchant_orders`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `merchant_payment_details`
+--
+ALTER TABLE `merchant_payment_details`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -939,19 +1210,25 @@ ALTER TABLE `merchant_tiers`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `payment_buttons`
+--
+ALTER TABLE `payment_buttons`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `payment_details`
 --
 ALTER TABLE `payment_details`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
@@ -963,7 +1240,7 @@ ALTER TABLE `payment_methods`
 -- AUTO_INCREMENT for table `payment_settings`
 --
 ALTER TABLE `payment_settings`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -981,7 +1258,7 @@ ALTER TABLE `product_groups`
 -- AUTO_INCREMENT for table `product_reviews`
 --
 ALTER TABLE `product_reviews`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `product_social_options`
@@ -993,19 +1270,19 @@ ALTER TABLE `product_social_options`
 -- AUTO_INCREMENT for table `product_types`
 --
 ALTER TABLE `product_types`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product_views`
 --
 ALTER TABLE `product_views`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `sellers`
 --
 ALTER TABLE `sellers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `seller_groups`
@@ -1017,19 +1294,19 @@ ALTER TABLE `seller_groups`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user_logs`
 --
 ALTER TABLE `user_logs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -1083,6 +1360,35 @@ ALTER TABLE `merchants`
   ADD CONSTRAINT `merchants_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
+-- Constraints for table `merchant_apps`
+--
+ALTER TABLE `merchant_apps`
+  ADD CONSTRAINT `merchant_apps_merchant_id_foreign` FOREIGN KEY (`merchant_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `merchant_invoices`
+--
+ALTER TABLE `merchant_invoices`
+  ADD CONSTRAINT `merchant_invoices_merchant_id_foreign` FOREIGN KEY (`merchant_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `merchant_invoices_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`);
+
+--
+-- Constraints for table `merchant_orders`
+--
+ALTER TABLE `merchant_orders`
+  ADD CONSTRAINT `merchant_orders_invoice_id_foreign` FOREIGN KEY (`invoice_id`) REFERENCES `merchant_invoices` (`id`),
+  ADD CONSTRAINT `merchant_orders_merchant_id_foreign` FOREIGN KEY (`merchant_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `merchant_orders_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`);
+
+--
+-- Constraints for table `merchant_payment_details`
+--
+ALTER TABLE `merchant_payment_details`
+  ADD CONSTRAINT `merchant_payment_details_invoice_id_foreign` FOREIGN KEY (`invoice_id`) REFERENCES `merchant_invoices` (`id`),
+  ADD CONSTRAINT `merchant_payment_details_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `merchant_orders` (`id`),
+  ADD CONSTRAINT `merchant_payment_details_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`);
+
+--
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
@@ -1090,6 +1396,12 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `orders_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`),
   ADD CONSTRAINT `orders_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   ADD CONSTRAINT `orders_seller_id_foreign` FOREIGN KEY (`seller_id`) REFERENCES `sellers` (`id`);
+
+--
+-- Constraints for table `payment_buttons`
+--
+ALTER TABLE `payment_buttons`
+  ADD CONSTRAINT `payment_buttons_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `payment_details`
