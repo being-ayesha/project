@@ -24,7 +24,7 @@ $layout="frontend.merchants.template";
 						<form method="post" action="{{url(Request::segment(1).'/settings/enable2fa')}}">
 						@csrf
 						<div class="form-group">
-						<input type="text" class="form-control" placeholder="Two Factor Code" name="verify_code" id="verify-code" style="margin-bottom: 10px">
+						<input type="text" required class="form-control" placeholder="Two Factor Code" name="verify_code" id="verify-code" style="margin-bottom: 10px">
 			     		</div>
 			     		<div class="text-right">
 			     		<button type="submit" class="btn bg-teal-400">Active 2FA</button>

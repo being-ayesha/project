@@ -16,12 +16,12 @@ $layout="frontend.merchants.template";
 			</div>
 			<div class="card-body">
 					<div class="form-group row">
-						<p class="card-title" style="margin-left: 5px">Login Method: Password {{@$userdetails->email_verification==1?'and Two Factor (Email)':''}} {{@$userdetails->two_step_verification==1?'and Two Factor (Authy)':''}}</p><br>	
+						<p class="card-title" style="margin-left: 5px">Login Method: Password {{@$userdetails->email_verification==1?'and Two Factor (Email)':''}} {{@$userdetails->two_step_verification==1?'and Two Factor':''}}</p><br>	
 						
 						@if(@$userdetails->two_step_verification==1)
 						<button type="btn" class="btn btn-danger btn-lg btn-block authenticate" style="font-size: 18px;font-weight:400" id="no2fa">Disable Two Factor Authentication</button>
 						@else
-						<a href="{{url(Request::segment(1).'/settings/enable-2fa')}}" class="btn bg-teal-400 btn-labeled btn-lg btn-block" style="font-size: 18px;font-weight:400" id="2fa">Click here to enable Authy Two Factor Authentication</a>
+						<a href="{{url(Request::segment(1).'/settings/enable-2fa')}}" class="btn bg-teal-400 btn-labeled btn-lg btn-block" style="font-size: 18px;font-weight:400" id="2fa">Click here to enable  Two Factor Authentication</a>
 						@endif
 
 						@if(@$userdetails->email_verification==1)

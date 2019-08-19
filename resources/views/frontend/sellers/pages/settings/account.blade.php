@@ -91,40 +91,7 @@
 
 			</div>
 			<div class="col-sm-6">
-				<div class="card">
-					<div class="card-body">
-							<form action="{{url('seller/settings/account')}}" method="post" enctype="multipart/form-data">
-								<input type="hidden" name="ipn_settings" value="1">
-								@csrf
-								<!-- <section> -->
-								<div class="form-group">
-					        	 	<p style="font-size: 15px;font-weight:600;text-transform:uppercase;color: #98a6ad">ipn settings</p>
-					        	</div>
-					            <div class="Settings">
-									 	<div class="form-check" style="float: left;">
-											  <input class="form-check-input" name="ipn_status" type="checkbox" {{@$settings->ipn_status==1?'checked="checked"':''}} id="ipn_status">
-									 	</div>
-										<label class="form-check-label" for="ipn_status" style="font-weight: 700;color:#797979;font-size:14px;display: block !important">
-										    Send IPNs For All Order updates (including chargebacks, disputes, and more) 
-										</label>											
-								</div>
-								<br>
-								<div class="form-group">
-								      <label for="ipn_secret" style="font-weight: 700;color:#797979;font-size:14px">Ipn Secret </label>
-								      <p>
-								      	<input type="text" class="form-control" id="ipn_secret" placeholder="IPN Secret" value="{{@$settings->ipn_secret?@$settings->ipn_secret:''}}" name="ipn_secret">
-								      </p>
-								      @if($errors->has('ipn_secret'))
-								         <span class="form-text text-danger">
-								         	{{$errors->first('ipn_secret')}}
-								         </span>
-								      @endif
-							    </div>
-							    <button type="submit" class="btn btn-md btn-primary">Save Changes</button>
-					        	<!-- </section> -->
-				        	</form>
-					</div>
-				</div>
+				
 				
 				<div class="card">
 					<div class="card-body">
